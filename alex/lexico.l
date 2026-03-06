@@ -24,12 +24,12 @@ package alex;
 %init}
 
 letra  = ([A-Z]|[a-z])
-digitoPositivo = [1-9]
-digito = ({digitoPositivo}|0)
-parteEntera = {digitoPositivo}{digito}*
-parteDecimal = {digito}* {digitoPositivo}
+digito = [0-9]
+
 separador = [ \t\r\b\n]
-comentario = #[^\n]* 
+comentario = "[^"]*"
+
+
 evalua = evalua
 donde = donde
 identificador = {letra}({letra}|{digito})*

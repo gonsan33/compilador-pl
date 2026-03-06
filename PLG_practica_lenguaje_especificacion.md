@@ -28,8 +28,7 @@ var miBooleano : bool = false ;
 
 Nuestros bloques empezarán siempre con `{` y acabarán con `}` , y se permitirán bloques anidados. Trabajaremos en un contexto dinámico, es decir, se permite reutilizar identificadores. 
 
-Los comentarios se escriben como  `“comentario”` y son solo de una línea, por lo tanto, sólo tienen la apertura de comentarios y no el cierre.
-
+Los comentarios se escriben como  `“comentario”` y pueden ser multilínea. 
 Vamos a poner un ejemplo “tonto”:
 
 ```jsx
