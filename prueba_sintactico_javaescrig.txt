@@ -1,1 +1,3 @@
 var n : int;
+var b : bool; 
+var n : $int;
