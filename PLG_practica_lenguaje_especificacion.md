@@ -22,7 +22,7 @@ Vamos a incluir los siguientes tipos: Números enteros, que los llamaremos `int`
 //Algún ejemplo muy sencillo
 var a : int;
 var b : bool;
-var c : int = 4; ""Con valor inicial
+var c : int = 4; "Con valor inicial"
 var miBooleano : bool = false ;
 ```
 
@@ -187,7 +187,7 @@ Una rama:
 
 ```jsx
 if (boolean_expr) { 
-	""Cuerpo del if 
+	"Cuerpo del if "
 }  
 ```
 
@@ -195,9 +195,9 @@ Dos ramas:
 
 ```jsx
 if (boolean_expr) {
-	""cuerpo del if 
+	"cuerpo del if "
 } else { 
-	""cuerpo del esle 
+	"cuerpo del esle "
 
 } 
 ```
