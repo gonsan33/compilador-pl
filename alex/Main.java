@@ -6,13 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import asint.ClaseLexica;
+
 public class Main {
    public static void main(String[] args) throws FileNotFoundException, IOException {
      Reader input = new InputStreamReader(new FileInputStream(args[0]));
      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
      UnidadLexica unidad;
      do {
-       unidad = al.yylex();
+       unidad = (UnidadLexica) al.next_token();
        System.out.println(unidad);
      }
      while (unidad.clase() != ClaseLexica.EOF);

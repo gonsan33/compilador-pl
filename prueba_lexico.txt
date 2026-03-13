@@ -1,0 +1,20 @@
+fn factorial(n : int) : int {
+    if (n = 0) {
+        return 1;
+    } else {
+        if (n = 1) {
+            return 1;
+        }
+    }
+    var fact_ant : int = factorial(n - 1);
+    return n * fact_ant;
+}
+
+fn main() : int {
+		var n:int;
+		scan(n);
+		var fact:int;
+		fact= factorial(n);
+		print(fact);
+		return 0;
+}
