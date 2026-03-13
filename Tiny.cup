@@ -19,19 +19,13 @@ init with {:
 :};
 
 
-terminal     DONDE, EVALUA, IDEN, ENT, REAL, MAS,
-             MENOS, POR, DIV, IGUAL, COMA, PAP, PCIERRE;
+terminal     ENT,  MAS, MENOS, POR, DIV, PAP, PCIERRE, CAP, CCIERRE, LLAP, LLCIERRE
+             DOSPUNTOS, FUNDEF, VARDEF, IGUAL, COMA, PUNTOCOMA, AMPERSAND, 
+             DOLAR, AND, OR, NOT, MOD, ASIGN, IF, ELSE, FOR, WHILE, RETURN,
+             NEW, DELETE, BOOL, INT, TYPE, STRUCT, TRUE, FALSE, IDEN;
 
 non terminal  S, Ds, LDs, D, E0, E1, E2, OP0, OP1;
 
-S   ::= EVALUA E0 Ds ;
-Ds  ::= DONDE LDs | ;
-LDs ::= LDs COMA D | D ;
-D   ::= IDEN IGUAL E0 ;
-E0  ::= E0 OP0 E1  | E1 ;
-E1  ::= E1 OP1 E2  | E2 ;
-E2  ::= ENT  | REAL  | IDEN  | PAP E0 PCIERRE ;  
-OP0 ::= MAS  | MENOS ;
-OP1 ::= POR | DIV ;
+S   ::= PUNTOCOMA
 
 
