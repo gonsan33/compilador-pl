@@ -1,5 +1,7 @@
 package alex;
 
+import errors.GestionErroresTiny;
+
 %%
 %char
 %line
@@ -11,10 +13,15 @@ package alex;
 
 %{
   private ALexOperations ops;
+  private GestionErroresTiny errores;
   public String lexema() {return yytext();}
   public int fila() {return yyline+1;}
   public int columna() {return yycolumn+1;}
+  public void fijaGestionErrores(GestionErroresTiny errores) {
+   this.errores = errores;
+  }
 %}
+
 
 %eofval{
   return ops.unidadEof();

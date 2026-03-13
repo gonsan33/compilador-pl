@@ -4,6 +4,8 @@
 
 package alex;
 
+import errors.GestionErroresTiny;
+
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -358,9 +360,13 @@ public class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 
   /* user code: */
   private ALexOperations ops;
+  private GestionErroresTiny errores;
   public String lexema() {return yytext();}
   public int fila() {return yyline+1;}
   public int columna() {return yycolumn+1;}
+  public void fijaGestionErrores(GestionErroresTiny errores) {
+   this.errores = errores;
+  }
 
 
   /**
