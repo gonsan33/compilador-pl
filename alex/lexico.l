@@ -44,9 +44,14 @@ llaveCierre = \}
 dosPuntos = \: 
 functionDef = fn 
 varDef = var 
-operadorIgual = \=\=
 coma  = ,
 puntoComa = \;
+
+operadorIgual = \=\=
+operadorMayorIgual = \>\= 
+operadorMayor = \>
+operadorMenorIgual = \<\= 
+operadorMenor = \<
 operadorAmpersand = \&
 operadorDolar = \$
 operadorAnd = and
@@ -71,6 +76,9 @@ reservadoStruct = struct
 reservadoTrue = true 
 reservadoFalse = false 
 
+reservadoPrint  = print
+reservadoScan = scan
+
 identificador = ({letra}| _) ({letra}| _ |{digito})*
 
 
@@ -92,33 +100,28 @@ identificador = ({letra}| _) ({letra}| _ |{digito})*
 {parentesisCierre}        {return ops.unidadPCierre();} 
 {corcheteApertura}        {return ops.unidadCAp();}
 {corcheteCierre}          {return ops.unidadCCierre();} 
+{llaveApertura}          {return ops.unidadLLAp();} 
+{llaveCierre}          {return ops.unidadLLierre();} 
 {dosPuntos}               {return ops.unidadDosPuntos();} 
 {functionDef}             {return ops.unidadFnDef();} 
 {varDef}                  {return ops.unidadVarDef();} 
 {igual}                   {return ops.unidadIgual();} 
 {coma}                    {return ops.unidadComa();}
 {puntoComa}               {return ops.unidadPuntoComa();}
+{operadorMayorIgual}      {return ops.unidadMayorIgual();}
+{operadorMayor}           {return ops.unidadMayor();}
+{operadorMenorIgual}      {return ops.unidadMenorIgual();}
+{operadorMenor}           {return ops.unidadMenor();}
 {operadorAmpersand}       {return ops.unidadAmpersand();}
 {operadorDolar}           {return ops.unidadDolar();}
 {operadorAnd}             {return ops.unidadAnd();}
-
-
-
-{operadorOr}             {return ops.unidadAnd();}
-
-{operadorNot}             {return ops.unidadAnd();}
-
-{operadorMod}             {return ops.unidadAnd();}
-
-
-{operadorAsignacion}             {return ops.unidadAnd();}
-
-
-{reservadoIf}             {return ops.unidadAnd();}
-
-{reservadoElse}             {return ops.unidadAnd();}
-
-{reservadoFor}             {return ops.unidadAnd();}
+{operadorOr}             {return ops.unidadOr();}
+{operadorNot}             {return ops.unidadNot();}
+{operadorMod}             {return ops.unidadMod();}
+{operadorAsignacion}             {return ops.unidadAsign();}
+{reservadoIf}             {return ops.unidadIf();}
+{reservadoElse}             {return ops.unidadElse();}
+{reservadoFor}             {return ops.unidadElse();}
 
 {reservadoWhile}             {return ops.unidadAnd();}
 
