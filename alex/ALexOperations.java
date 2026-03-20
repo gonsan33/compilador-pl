@@ -57,6 +57,10 @@ public class ALexOperations {
       return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.DOSPUNTOS);
    }
 
+   public UnidadLexica unidadPunto() {
+      return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.PUNTO);
+   }
+
    public UnidadLexica unidadFnDef() {
       return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.FUNDEF);
    }
@@ -158,7 +162,7 @@ public class ALexOperations {
    }
 
    public UnidadLexica unidadType() {
-      return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.TIPO);
+      return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.TYPEDEF);
    }
 
    public UnidadLexica unidadStruct() {

@@ -135,10 +135,10 @@ type compuesto : struct (x : struct_t, y : int, z: struct_t );
 Se definen dando sus dimensiones y el tipo de sus datos. En concreto, para declarar un array se da el tipo y la **lista de dimensiones**. 
 
 ```jsx
-var arrayUniDim : int [12] ;
-var arrayMultiDim : int [12][23] ;
+var arrayUniDim : [12]int  ;
+var arrayMultiDim : [12][23]int  ;
 ```
-
+Se declaran de esta forma las dimensiones de los arrays para facitlitar la gramática. 
 Acceso a elementos de un array: 
 
 ```jsx
@@ -242,7 +242,7 @@ var i: int = 0;
 
 scan(n);
 
-var lista : int [100]; "arrays de hasta 100 elementos para este caso"
+var lista : [100]int ; "arrays de hasta 100 elementos para este caso"
 
 while (not (i== n)) {
     var actual : int;

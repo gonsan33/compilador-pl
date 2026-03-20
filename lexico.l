@@ -38,7 +38,7 @@ separador = [ \t\r\b\n]
 comentario = \"[^\"]*\"
 
 
-numeroEntero = [\+\-]?{digito}{digito}*
+numeroEntero = {digito}{digito}*
 operadorSuma = \+
 operadorResta = \-
 operadorMultiplicacion = \*
@@ -67,7 +67,7 @@ operadorOr = or
 operadorNot = not
 operadorMod = mod 
 operadorAsignacion = \=
-
+operadorPunto = \. 
 
 
 reservadoIf = if 
@@ -100,6 +100,7 @@ identificador = ({letra}| _) ({letra}| _ |{digito})*
 {operadorSuma}            {return ops.unidadSuma();}
 {operadorResta}           {return ops.unidadResta();}
 {operadorMultiplicacion}  {return ops.unidadMul();}
+{operadorPunto}             {return ops.unidadPunto();}
 {operadorDivision}        {return ops.unidadDiv();}
 {numeroEntero}            {return ops.unidadEnt();}
 {parentesisApertura}      {return ops.unidadPAp();}
