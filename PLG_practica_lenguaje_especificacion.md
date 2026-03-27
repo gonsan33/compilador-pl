@@ -206,7 +206,7 @@ Si nos da tiempo, queremos introducir también los switch-case, pero sólo si no
 
 ## Bucle while
 
-Se obliga a poner llaves. En principio, solo implementaremos el While.
+Se obliga a poner llaves en todas las instrucciones de control (for, while, if ...)
 
 ```jsx
 while(boolean_expr) {

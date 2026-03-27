@@ -86,7 +86,7 @@ public class ALexOperations {
    }
 
    public UnidadLexica unidadMayor() {
-      return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.MENORIGUAL);
+      return new UnidadLexica(alex.fila(), alex.columna(), ClaseLexica.MAYOR);
    }
 
    public UnidadLexica unidadMenorIgual() {
