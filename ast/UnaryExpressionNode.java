@@ -2,7 +2,7 @@ package ast;
 
 import java.util.function.UnaryOperator;
 
-public class UnaryExpressionNode {
+public class UnaryExpressionNode extends ExpressionNode {
     protected ExpressionNode exp; 
     protected UnaryOperation op; 
     

@@ -3,7 +3,10 @@ package asint;
 import java_cup.runtime.*;
 import alex.AnalizadorLexicoTiny;
 import alex.UnidadLexica;
+import alex.TokenValue;
 import errors.GestionErroresTiny;
+
+import ast.*;
 
 scan with {: return getScanner().next_token(); :};
 parser code {: 
@@ -18,14 +21,20 @@ init with {:
    alex.fijaGestionErrores(errores);
 :};
 
+terminal TokenValue IDEN, ENT;
 
-terminal     ENT,  MAS, MENOS, POR, DIV, PAP, PCIERRE, CAP, CCIERRE, LLAP, LLCIERRE,
+terminal     MAS, MENOS, POR, DIV, PAP, PCIERRE, CAP, CCIERRE, LLAP, LLCIERRE,
              DOSPUNTOS, FUNDEF, VARDEF, IGUAL, COMA, PUNTOCOMA, MAYORIGUAL, MAYOR, MENORIGUAL, MENOR, AMPERSAND, 
              DOLAR, AND, OR, NOT, MOD, ASIGN, IF, ELSE, FOR, WHILE, RETURN,
-             NEW, DELETE, BOOL, INT, TYPEDEF, STRUCT, TRUE, FALSE, PRINT, SCAN, IDEN, PUNTO;
+             NEW, DELETE, BOOL, INT, TYPEDEF, STRUCT, TRUE, FALSE, PRINT, SCAN, PUNTO;
+
+
+non terminal ExpressionNode EXPRESION, E0, E1, E2, E3,DESIGNADOR,LLAMADA_FUNCION;
+non terminal TypeNode TIPO_DE_VARIABLE, T1, T2;
+
 
 non terminal  PROGRAMA, LISTA_INSTRUCCIONES, INSTRUCCION,  DECL_FUNCION, FUNCION, DECL_TIPO, DECL_VARIABLE,
-DECL_STRUCT, TIPO_DE_VARIABLE, EXPRESION, E0, E1, E2, E3, DESIGNADOR, LLAMADA_FUNCION, T1, T2, LISTA_DECLARACIONES,
+DECL_STRUCT, LISTA_DECLARACIONES,
 LISTA_DECLARACIONES_REST, TFUN, D1, D2, INSTR_CONTROL, INSTR_WHILE , INSTR_FOR , INSTR_IF , INSTR_RETURN , RAMA_ELSE,
 EXPRESION_OPT, LISTA_ARGUMENTOS, LISTA_ARGUMENTOS_REST, BLOQUE, ASIGNACION, INSTR_PRINT, INSTR_SCAN;
 
@@ -37,30 +46,30 @@ ASIGNACION ::= DESIGNADOR ASIGN EXPRESION PUNTOCOMA;
 INSTR_PRINT ::= PRINT PAP EXPRESION PCIERRE PUNTOCOMA;
 INSTR_SCAN ::= SCAN PAP DESIGNADOR PCIERRE PUNTOCOMA;
 
-DECL_VARIABLE ::= VARDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:tipo {: RESULT = new VariableDeclarationNode(id, tipo) :}
- | VARDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:tipo ASIGN EXPRESION:expr {: RESULT = new VariableDeclarationNode(id, tipo, expr) :} 
- | VARDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:tipo ASIGN NEW TIPO_DE_VARIABLE:tipo2 {: RESULT = new VariableDeclarationNode(id, tipo, new NewNode(tipo2)) :};
+DECL_VARIABLE ::= VARDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:tipo {: RESULT = new VariableDeclarationNode(id.lexema, tipo); :}
+ | VARDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:tipo ASIGN EXPRESION:expr {: RESULT = new VariableDeclarationNode(id.lexema, tipo, expr); :} 
+ | VARDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:tipo ASIGN NEW TIPO_DE_VARIABLE:tipo2 {: RESULT = new VariableDeclarationNode(id.lexema, tipo, new NewNode(tipo2)); :};
 
-EXPRESION ::= EXPRESION:l MAYORIGUAL E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.GEQ, l, r) :}
-| EXPRESION:l MAYOR E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.GT, l, r) :}
- | EXPRESION:l MENORIGUAL E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.LEQ, l, r) :}
- | EXPRESION:l MENOR E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.LT, l, r) :}
- | EXPRESION:l IGUAL E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.EQ, l, r) :}
- | E0:res {: RESULT = res :};
-E0 ::= E0:l MAS E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.SUM, l, r) :} 
-| E0:l MENOS E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.DIFFERENCE, l, r) :}
-| E0:l OR E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.OR, l, r) :}
-| E1:res {: RESULT = res :};
-E1 ::= E1:l POR E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MULTIPLICATION, l, r) :} | E1:l DIV E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.DIVISION, l, r) :} | E1:l AND E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.AND, l, r) :} | 
-E1:l MOD E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MODULE, l, r) :} | 
-E2:res {: RESULT = res :};
-E2 ::= DOLAR E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.DOLAR, e) :} 
-| AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAND, e) :} 
-| MAS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MAS, e) :} 
-| MENOS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MENOS, e) :} 
-| NOT E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.NOT, e) :} 
-| E3: e {: RESULT = e :};
-E3 ::= DESIGNADOR: d {: RESULT = d :} | LLAMADA_FUNCION:f {: RESULT = f :} | ENT:e {: RESULT = e :} | TRUE:t {: RESULT = t :} | FALSE:f {: RESULT = f :} | PAP EXPRESION:e PCIERRE {: RESULT = e :};
+EXPRESION ::= EXPRESION:l MAYORIGUAL E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.GEQ, l, r); :}
+| EXPRESION:l MAYOR E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.GT, l, r); :}
+ | EXPRESION:l MENORIGUAL E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.LEQ, l, r); :}
+ | EXPRESION:l MENOR E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.LT, l, r); :}
+ | EXPRESION:l IGUAL E0:r {: RESULT = new BinaryExpressionNode(BinaryOperation.EQ, l, r); :}
+ | E0:res {: RESULT = res; :};
+E0 ::= E0:l MAS E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.SUM, l, r); :} 
+| E0:l MENOS E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.DIFFERENCE, l, r); :}
+| E0:l OR E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.OR, l, r); :}
+| E1:res {: RESULT = res; :};
+E1 ::= E1:l POR E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MULTIPLICATION, l, r); :} | E1:l DIV E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.DIVISION, l, r); :} | E1:l AND E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.AND, l, r); :} | 
+E1:l MOD E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MODULE, l, r); :} | 
+E2:res {: RESULT = res; :};
+E2 ::= DOLAR E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.DOLAR, e); :} 
+| AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAND, e); :} 
+| MAS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MAS, e); :} 
+| MENOS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MENOS, e); :} 
+| NOT E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.NOT, e); :} 
+| E3: e {: RESULT = e; :};
+E3 ::= DESIGNADOR: d {: RESULT = d; :} | LLAMADA_FUNCION:f {: RESULT = f; :} | ENT:e {: RESULT = new IntNode(e.lexema);:} | TRUE {: RESULT = new BooleanNode(true); :} | FALSE {: RESULT = new BooleanNode(false); :} | PAP EXPRESION:e PCIERRE {: RESULT = e; :};
 
 
 TIPO_DE_VARIABLE ::= CAP ENT CCIERRE TIPO_DE_VARIABLE | T1 ;
