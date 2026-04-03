@@ -1,1 +1,4 @@
 *.class
+alex/AnalizadorLexicoTiny.java
+asint/AnalizadorSintacticoTiny.java
+asint/ClaseLexica.java

@@ -18,7 +18,7 @@ public class ASTTest {
         Arrays.sort(inputs);
         int ok = 0, fail = 0;
         for (File f : inputs) {
-            System.out.println("=== " + f.getName() + " ===");
+            System.out.println("Testeando  " + f.getName() + "");
             ProcessBuilder pb = new ProcessBuilder(
                 "java", "-cp", ".:cup.jar",
                 "tests.tests_ast.ASTTest", "--run", f.getPath()
