@@ -10,4 +10,9 @@ public class ScanNode extends SentenceNode{
     public String toString() {
         return "Scan(designator = " + designator + ")";
     }
+
+    @Override
+    public void bind() {
+        designator.bind();
+    }
 }

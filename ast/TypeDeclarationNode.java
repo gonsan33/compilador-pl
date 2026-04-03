@@ -1,5 +1,7 @@
 package ast;
 
+import bind.SymbolTable;
+
 public class TypeDeclarationNode extends SentenceNode{
     protected String identifier;
     protected TypeNode type;
@@ -11,5 +13,11 @@ public class TypeDeclarationNode extends SentenceNode{
 
     public String toString() {
         return "TypeDeclaration(id = " + identifier + ", type = " + type + ")";
+    }
+
+    @Override
+    public void bind() {
+        type.bind();
+        SymbolTable.getSymbolTable().insert(identifier, this);
     }
 }

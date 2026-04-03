@@ -12,4 +12,10 @@ public class ArrayAccessNode extends ExpressionNode{
     public String toString() {
         return "ArrayAccess(designator = " + designator + ", index = " + index + ")";
     }
+
+    @Override
+    public void bind() {
+        designator.bind();
+        index.bind();
+    }
 }

@@ -13,19 +13,16 @@ public class NewNode implements ASTNode {
 
     @Override
     public void bind() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bind'");
-        }
+        type.bind();
+    }
 
     @Override
     public void typeCheck() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
     }
 
     @Override
     public void generateCode() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
 }

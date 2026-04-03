@@ -13,4 +13,12 @@ public class ForNode extends ControlSentenceNode{
     public String toString() {
         return "For(init = " + init + ", cond = " + boolean_expression + ", step = " + step + ", block = " + block + ")";
     }
+
+    @Override
+    public void bind() {
+        if (init != null) init.bind();
+        if (boolean_expression != null) boolean_expression.bind();
+        if (step != null) step.bind();
+        block.bind();
+    }
 }

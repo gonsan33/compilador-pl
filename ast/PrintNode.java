@@ -10,4 +10,9 @@ public class PrintNode extends SentenceNode{
     public String toString() {
         return "Print(expr = " + expression + ")";
     }
+
+    @Override
+    public void bind() {
+        expression.bind();
+    }
 }

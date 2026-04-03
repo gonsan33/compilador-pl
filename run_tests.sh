@@ -15,4 +15,26 @@ if [ ! -f asint/AnalizadorSintacticoTiny.java ]; then
     mv ClaseLexica.java asint/
 fi
 
-javac -cp ".:cup.jar" */*.java tests/tests_ast/ASTTest.java 2>/dev/null && java -cp ".:cup.jar" tests.tests_ast.ASTTest
+# Compilar todo
+javac -cp ".:cup.jar" */*.java Main.java tests/tests_ast/ASTTest.java 2>/dev/null
+
+echo "=== Tests AST ==="
+java -cp ".:cup.jar" tests.tests_ast.ASTTest
+echo ""
+
+echo "=== Tests Binding ==="
+BIND_DIR="tests/tests_binding"
+if [ -d "$BIND_DIR" ]; then
+    for f in "$BIND_DIR"/*.in; do
+        [ -f "$f" ] || continue
+        echo "Testeando $f"
+        java -cp ".:cup.jar" Main "$f"
+        exit_code=$?
+        if [ $exit_code -eq 0 ]; then
+            echo "OK"
+        else
+            echo "FAIL (exit $exit_code)"
+        fi
+        echo ""
+    done
+fi

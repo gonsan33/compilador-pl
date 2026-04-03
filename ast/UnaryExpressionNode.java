@@ -1,7 +1,5 @@
 package ast;
 
-import java.util.function.UnaryOperator;
-
 public class UnaryExpressionNode extends ExpressionNode {
     protected ExpressionNode exp; 
     protected UnaryOperation op; 
@@ -13,5 +11,10 @@ public class UnaryExpressionNode extends ExpressionNode {
 
     public String toString() {
         return op.toString() + "(exp = " + exp.toString() + ")"; 
+    }
+
+    @Override
+    public void bind() {
+        exp.bind();
     }
 }
