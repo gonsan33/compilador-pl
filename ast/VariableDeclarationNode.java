@@ -3,9 +3,9 @@ package ast;
 public class VariableDeclarationNode extends SentenceNode{
     protected String identifier; 
     protected TypeNode type; 
-
-    protected ExpressionNode expression = null ;
+    protected ExpressionNode expression = null;
     protected NewNode newNode = null;
+
     public VariableDeclarationNode(String id, TypeNode type) {
         this.identifier = id; 
         this.type = type; 
@@ -19,5 +19,12 @@ public class VariableDeclarationNode extends SentenceNode{
         this.identifier = id; 
         this.type = type; 
         this.newNode = nn; 
+    }
+
+    public String toString() {
+        String s = "VariableDeclaration(id = " + identifier + ", type = " + type;
+        if (expression != null) s += ", expr = " + expression;
+        if (newNode != null) s += ", new = " + newNode;
+        return s + ")";
     }
 }

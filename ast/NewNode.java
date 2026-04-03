@@ -1,16 +1,21 @@
 package ast;
 
 public class NewNode implements ASTNode {
+    protected TypeNode type; 
 
-    protected TypeNode type ; 
-    public NewNode(TypeNode type ) {
+    public NewNode(TypeNode type) {
         this.type = type;
     }
+
+    public String toString() {
+        return "New(type = " + type + ")";
+    }
+
     @Override
     public void bind() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'bind'");
-    }
+        }
 
     @Override
     public void typeCheck() {
@@ -23,5 +28,4 @@ public class NewNode implements ASTNode {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
-    
 }

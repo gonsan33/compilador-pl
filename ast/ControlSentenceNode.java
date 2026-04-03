@@ -1,13 +1,17 @@
 package ast;
 //Class from which if, while and for sentences will inherit. 
 //its arguments include a boolean expression and a mandatory BLOCK 
-public class ControlSentenceNode implements ASTNode{
-    protected ExpressionNode boolean_expression ; 
+public class ControlSentenceNode extends SentenceNode{
+    protected ExpressionNode boolean_expression; 
     protected BlockNode block; 
 
-    public ControlSentenceNode(ExpressionNode boolean_expression, BlockNode  block ) {
+    public ControlSentenceNode(ExpressionNode boolean_expression, BlockNode block) {
         this.boolean_expression = boolean_expression; 
         this.block = block; 
+    }
+
+    public String toString() {
+        return "ControlSentence(cond = " + boolean_expression + ", block = " + block + ")";
     }
 
     @Override

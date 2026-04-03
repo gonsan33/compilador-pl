@@ -6,5 +6,7 @@ public class WhileNode extends ControlSentenceNode{
         super(boolean_expression, block);
     }
 
+    public String toString() {
+        return "While(cond = " + boolean_expression + ", block = " + block + ")";
+    }
 }
-
