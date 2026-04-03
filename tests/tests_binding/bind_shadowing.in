@@ -1,0 +1,17 @@
+var x : int = 2;
+var y : int = 3;
+
+y = x;
+
+var x : int = 6;
+y = x;
+
+{
+    var y : int = 3;
+    y = x;
+    var x : int = 3;
+    y = x;
+}
+
+print(x);
+print(y);

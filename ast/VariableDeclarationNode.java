@@ -1,5 +1,7 @@
 package ast;
 
+import bind.SymbolTable;
+
 public class VariableDeclarationNode extends SentenceNode{
     protected String identifier; 
     protected TypeNode type; 
@@ -26,5 +28,13 @@ public class VariableDeclarationNode extends SentenceNode{
         if (expression != null) s += ", expr = " + expression;
         if (newNode != null) s += ", new = " + newNode;
         return s + ")";
+    }
+
+    @Override
+    public void bind() {
+        type.bind();
+        if (expression != null) expression.bind();
+        if (newNode != null) newNode.bind();
+        SymbolTable.getSymbolTable().insert(identifier, this);
     }
 }

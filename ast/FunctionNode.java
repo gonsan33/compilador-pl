@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.ArrayList;
+import bind.SymbolTable;
 
 public class FunctionNode extends SentenceNode{
     protected String identifier;
@@ -20,5 +21,22 @@ public class FunctionNode extends SentenceNode{
         if (returnType != null) s += ", returnType = " + returnType;
         if (body != null) s += ", body = " + body;
         return s + ")";
+    }
+
+    @Override
+    public void bind() {
+        SymbolTable st = SymbolTable.getSymbolTable();
+        st.insert(identifier, this);
+
+        if (returnType != null)
+            returnType.bind();
+        
+        st.openScope();
+        for (ParameterNode param : params)
+            param.bind();
+        
+        if (body != null) 
+            body.bind();
+        st.closeScope();
     }
 }

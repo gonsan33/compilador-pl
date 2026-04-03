@@ -1,7 +1,7 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.List;
+import bind.SymbolTable;
 
 public class BlockNode extends SentenceNode {
     protected ArrayList<SentenceNode> instructions; 
@@ -18,5 +18,15 @@ public class BlockNode extends SentenceNode {
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    @Override
+    public void bind() {
+        SymbolTable st = SymbolTable.getSymbolTable();
+        st.openScope();
+        for (SentenceNode instruction : instructions) {
+            instruction.bind();
+        }
+        st.closeScope();
     }
 }

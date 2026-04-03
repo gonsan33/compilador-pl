@@ -15,4 +15,8 @@ public class GestionErroresTiny {
      }
      System.exit(1);
    }
+   public void errorBinding(String message) {
+     System.out.println("ERROR BINDING: " + message);
+     System.exit(1);
+   }
 }

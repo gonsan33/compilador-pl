@@ -12,4 +12,9 @@ public class ArrayTypeNode extends TypeNode{
     public String toString() {
         return "Array(size = " + size + ", elementType = " + elementType + ")";
     }
+
+    @Override
+    public void bind() {
+        elementType.bind();
+    }
 }

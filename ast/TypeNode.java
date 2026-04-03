@@ -2,10 +2,7 @@ package ast;
 
 public class TypeNode implements ASTNode{
     @Override
-    public void bind() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bind'");
-    }
+    public void bind() {}
 
     @Override
     public void typeCheck() {

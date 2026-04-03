@@ -10,4 +10,9 @@ public class PointerTypeNode extends TypeNode{
     public String toString() {
         return "Pointer(baseType = " + baseType + ")";
     }
+
+    @Override
+    public void bind() {
+        baseType.bind();
+    }
 }

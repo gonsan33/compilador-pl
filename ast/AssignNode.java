@@ -1,15 +1,21 @@
 package ast;
 
 public class AssignNode extends SentenceNode{
-    protected ExpressionNode designator;
+    protected ExpressionNode designated;
     protected ExpressionNode expression;
 
-    public AssignNode(ExpressionNode designator, ExpressionNode expression) {
-        this.designator = designator;
+    public AssignNode(ExpressionNode designated, ExpressionNode expression) {
+        this.designated = designated;
         this.expression = expression;
     }
 
     public String toString() {
-        return "Assign(designator = " + designator + ", expression = " + expression + ")";
+        return "Assign(designator = " + designated + ", expression = " + expression + ")";
+    }
+
+    @Override
+    public void bind() {
+        designated.bind();
+        expression.bind();
     }
 }

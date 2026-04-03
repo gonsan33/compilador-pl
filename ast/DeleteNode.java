@@ -10,4 +10,9 @@ public class DeleteNode extends SentenceNode{
     public String toString() {
         return "Delete(designator = " + designator + ")";
     }
+
+    @Override
+    public void bind() {
+        designator.bind();
+    }
 }

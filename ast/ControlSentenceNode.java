@@ -1,6 +1,5 @@
 package ast;
-//Class from which if, while and for sentences will inherit. 
-//its arguments include a boolean expression and a mandatory BLOCK 
+
 public class ControlSentenceNode extends SentenceNode{
     protected ExpressionNode boolean_expression; 
     protected BlockNode block; 
@@ -16,20 +15,17 @@ public class ControlSentenceNode extends SentenceNode{
 
     @Override
     public void bind() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bind'");
+        if (boolean_expression != null) boolean_expression.bind();
+        if (block != null) block.bind();
     }
 
     @Override
     public void typeCheck() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
     }
 
     @Override
     public void generateCode() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
-
 }

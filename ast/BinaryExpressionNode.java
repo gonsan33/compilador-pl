@@ -14,5 +14,10 @@ public class BinaryExpressionNode extends ExpressionNode {
     public String toString() {
         return op.toString() + "(left = " +  left.toString() + ", right = " + right.toString() + ")"; 
     }
-}
 
+    @Override
+    public void bind() {
+        left.bind();
+        right.bind();
+    }
+}

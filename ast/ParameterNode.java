@@ -1,5 +1,7 @@
 package ast;
 
+import bind.SymbolTable;
+
 public class ParameterNode implements ASTNode{
     protected String identifier;
     protected TypeNode type;
@@ -15,13 +17,13 @@ public class ParameterNode implements ASTNode{
 
     @Override
     public void bind() {
+        type.bind();
+        SymbolTable.getSymbolTable().insert(identifier, this);
     }
 
     @Override
-    public void typeCheck() {
-    }
+    public void typeCheck() {}
 
     @Override
-    public void generateCode() {
-    }
+    public void generateCode() {}
 }

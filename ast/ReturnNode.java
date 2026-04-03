@@ -10,4 +10,9 @@ public class ReturnNode extends SentenceNode{
     public String toString() {
         return "Return(expr = " + expression + ")";
     }
+
+    @Override
+    public void bind() {
+        expression.bind();
+    }
 }

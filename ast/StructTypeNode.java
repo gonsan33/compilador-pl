@@ -12,4 +12,11 @@ public class StructTypeNode extends TypeNode{
     public String toString() {
         return "Struct(fields = " + fields + ")";
     }
+
+    @Override
+    public void bind() {
+        for (ParameterNode field : fields) {
+            field.type.bind();
+        }
+    }
 }

@@ -13,4 +13,11 @@ public class IfNode extends ControlSentenceNode{
         if (elseBlock != null) s += ", else = " + elseBlock;
         return s + ")";
     }
+
+    @Override
+    public void bind() {
+        boolean_expression.bind();
+        block.bind();
+        if (elseBlock != null) elseBlock.bind();
+    }
 }
