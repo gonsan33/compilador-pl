@@ -18,11 +18,11 @@ fi
 # Compilar todo
 javac -cp ".:cup.jar" */*.java Main.java tests/tests_ast/ASTTest.java 2>/dev/null
 
-echo "=== Tests AST ==="
+echo Testar AST"
 java -cp ".:cup.jar" tests.tests_ast.ASTTest
 echo ""
 
-echo "=== Tests Binding ==="
+echo "Testear Binding"
 BIND_DIR="tests/tests_binding"
 if [ -d "$BIND_DIR" ]; then
     for f in "$BIND_DIR"/*.in; do
