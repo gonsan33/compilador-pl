@@ -24,6 +24,7 @@ echo ""
 
 echo "Testear Binding"
 BIND_DIR="tests/tests_binding"
+
 if [ -d "$BIND_DIR" ]; then
     for f in "$BIND_DIR"/*.in; do
         [ -f "$f" ] || continue
