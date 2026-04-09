@@ -111,7 +111,8 @@ BLOQUE ::= LLAP LISTA_INSTRUCCIONES:l LLCIERRE {: RESULT = new BlockNode(l); :};
 
 DESIGNADOR ::= DESIGNADOR:d CAP EXPRESION:e CCIERRE {: RESULT = new ArrayAccessNode(d, e); :} | D1:d {: RESULT = d; :};
 D1 ::= D1:d PUNTO D2:f {: RESULT = new FieldAccessNode(d, f.toString()); :} | D2:d {: RESULT = d; :};
-D2 ::= IDEN:id {: RESULT = new IdentifierNode(id.lexema); :};
+D2 ::= IDEN:id {: RESULT = new IdentifierNode(id.lexema); :} | D3:d {: RESULT = d; :};
+D3 ::= DOLAR DESIGNADOR:d {: RESULT = new PointerAccessNode(d); :} | PAP DESIGNADOR:d PCIERRE {: RESULT = d; :};
 
 LLAMADA_FUNCION ::= IDEN:id PAP LISTA_ARGUMENTOS:l PCIERRE {: RESULT = new FunctionCallNode(id.lexema, l); :};
 LISTA_ARGUMENTOS ::= EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e); RESULT = r; :}
