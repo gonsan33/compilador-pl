@@ -1,6 +1,6 @@
 package ast;
 
-public class ArrayAccessNode extends ExpressionNode{
+public class ArrayAccessNode extends DesignatorNode{
     protected ExpressionNode designator;
     protected ExpressionNode index;
 

@@ -17,4 +17,22 @@ public class ArrayTypeNode extends TypeNode{
     public void bind() {
         elementType.bind();
     }
+
+    @Override
+    public void typeCheck() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
+    }
+
+    @Override
+    public boolean equals(TypeNode other) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'equals'");
+    }
+
+    @Override
+    public int size() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'size'");
+    }
 }

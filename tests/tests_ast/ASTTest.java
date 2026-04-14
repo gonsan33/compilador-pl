@@ -19,8 +19,9 @@ public class ASTTest {
         int ok = 0, fail = 0;
         for (File f : inputs) {
             System.out.println("Testeando  " + f.getName() + "");
+            String cp = "." + File.pathSeparator + "cup.jar";
             ProcessBuilder pb = new ProcessBuilder(
-                "java", "-cp", ".:cup.jar",
+                "java", "-cp", cp,
                 "tests.tests_ast.ASTTest", "--run", f.getPath()
             );
             pb.redirectErrorStream(true);

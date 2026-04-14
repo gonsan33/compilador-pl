@@ -1,6 +1,6 @@
 package ast;
 
-public class PointerAccessNode extends ExpressionNode {
+public class PointerAccessNode extends DesignatorNode {
     protected ExpressionNode designator;
 
     public PointerAccessNode(ExpressionNode designator) {

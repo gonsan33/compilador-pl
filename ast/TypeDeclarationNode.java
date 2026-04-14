@@ -20,4 +20,8 @@ public class TypeDeclarationNode extends SentenceNode{
         type.bind();
         SymbolTable.getSymbolTable().insert(identifier, this);
     }
+
+    public int size() {
+        return type.size(); 
+    }
 }

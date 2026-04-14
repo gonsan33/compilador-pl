@@ -1,18 +1,12 @@
 package ast;
 
-public class TypeNode implements ASTNode{
-    @Override
-    public void bind() {}
+public abstract class TypeNode implements ASTNode{
 
     @Override
-    public void typeCheck() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
-    }
+    public void generateCode() {}
 
-    @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
-    }
+    public abstract boolean equals(TypeNode other); 
+
+    public abstract int size(); 
+
 }

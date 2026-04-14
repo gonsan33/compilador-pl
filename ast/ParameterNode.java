@@ -26,4 +26,12 @@ public class ParameterNode implements ASTNode{
 
     @Override
     public void generateCode() {}
+
+    public TypeNode getType() {
+        return this.type; 
+    }
+
+    public boolean equals(ParameterNode other) {
+        return this.identifier.equals(other.identifier) && this.type.equals(other.type); 
+    }
 }

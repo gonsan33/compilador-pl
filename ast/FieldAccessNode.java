@@ -2,7 +2,7 @@ package ast;
 
 // es el nodo que implica acceder al campo de un struct, eg. `myStruct.x`
 
-public class FieldAccessNode extends ExpressionNode{
+public class FieldAccessNode extends DesignatorNode{
     protected ExpressionNode designator;
     protected String field;
 

@@ -1,24 +1,9 @@
 package ast;
 
-public class ExpressionNode implements ASTNode {
-    @Override
-    public String toString() {
-        return null;
-    }
+public abstract class ExpressionNode implements ASTNode {
 
-    @Override
-    public void bind() {
+    protected TypeNode type; 
 
-    }
-
-    @Override
-    public void typeCheck() {
-
-    }
-
-    @Override
-    public void generateCode() {
-
-    }
+    public abstract TypeNode getType() ; 
 
 }

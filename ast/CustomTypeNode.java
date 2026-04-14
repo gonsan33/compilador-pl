@@ -5,7 +5,7 @@ import errors.GestionErroresTiny;
 
 public class CustomTypeNode extends TypeNode{
     protected String identifier;
-    protected ASTNode declaration;
+    protected TypeDeclarationNode declaration;
 
     public CustomTypeNode(String identifier) {
         this.identifier = identifier;
@@ -15,9 +15,24 @@ public class CustomTypeNode extends TypeNode{
 
     @Override
     public void bind() {
-        declaration = SymbolTable.getSymbolTable().lookup(identifier);
+        declaration = (TypeDeclarationNode) SymbolTable.getSymbolTable().lookup(identifier);
         if (declaration == null) {
             new GestionErroresTiny().errorBinding("Tipo no declarado: " + identifier);
         }
+    }
+
+    @Override
+    public void typeCheck() {
+
+    }
+
+    @Override
+    public boolean equals(TypeNode other) {
+        return this.getClass().equals(other.getClass()); 
+    }
+
+    @Override
+    public int size() {
+        return declaration.size(); 
     }
 }

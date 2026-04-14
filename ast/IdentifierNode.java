@@ -3,7 +3,7 @@ package ast;
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
 
-public class IdentifierNode extends ExpressionNode{
+public class IdentifierNode extends DesignatorNode{
     protected String identifier;
     protected ASTNode declaration;
 

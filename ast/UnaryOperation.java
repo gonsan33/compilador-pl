@@ -1,5 +1,5 @@
 package ast;
 
 public enum UnaryOperation {
-DOLAR, AMPERSAND, MAS, MENOS, NOT 
+AMPERSAND, MAS, MENOS, NOT 
 }
