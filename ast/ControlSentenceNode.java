@@ -1,12 +1,14 @@
 package ast;
 
-public class ControlSentenceNode extends SentenceNode{
-    protected ExpressionNode boolean_expression; 
-    protected BlockNode block; 
+import errors.GestionErroresTiny;
+
+public class ControlSentenceNode extends SentenceNode {
+    protected ExpressionNode boolean_expression;
+    protected BlockNode block;
 
     public ControlSentenceNode(ExpressionNode boolean_expression, BlockNode block) {
-        this.boolean_expression = boolean_expression; 
-        this.block = block; 
+        this.boolean_expression = boolean_expression;
+        this.block = block;
     }
 
     public String toString() {
@@ -15,13 +17,16 @@ public class ControlSentenceNode extends SentenceNode{
 
     @Override
     public void bind() {
-        if (boolean_expression != null) boolean_expression.bind();
-        if (block != null) block.bind();
+        if (boolean_expression != null)
+            boolean_expression.bind();
+        if (block != null)
+            block.bind();
     }
 
     @Override
     public void typeCheck() {
-        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
+        if (!boolean_expression.getType().equals(new BoolTypeNode()))
+            new GestionErroresTiny().errorTipos("La expresión debe ser booleana");
     }
 
     @Override

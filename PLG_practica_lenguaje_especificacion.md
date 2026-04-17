@@ -283,4 +283,4 @@ fn main() : int {
 
 # Consideraciones finales
 - Las funciones solo devolverán tipos básicos, por lo que `f()[i]` es algo que no puede aparecer. Tampoco puede aparecer f().struct_variable. En consecuencia, en la gramática los accesos a arrays y a struct solo funcionan con identificadores. 
-- 
+- Se prohíbe la sobrecarga de funciones. 

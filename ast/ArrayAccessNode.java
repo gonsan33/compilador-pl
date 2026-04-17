@@ -1,8 +1,12 @@
 package ast;
 
-public class ArrayAccessNode extends DesignatorNode{
+import errors.GestionErroresTiny;
+
+public class ArrayAccessNode extends DesignatorNode {
     protected ExpressionNode designator;
     protected ExpressionNode index;
+
+    protected Array
 
     public ArrayAccessNode(ExpressionNode designator, ExpressionNode index) {
         this.designator = designator;
@@ -15,7 +19,31 @@ public class ArrayAccessNode extends DesignatorNode{
 
     @Override
     public void bind() {
+
         designator.bind();
         index.bind();
+    }
+
+    @Override
+    public void typeCheck() {
+        index.typeCheck();
+        designator.typeCheck();
+        if (!index.getType().equals(new IntTypeNode())) {
+            new GestionErroresTiny().errorTipos("La expresión debe ser entera");
+        }
+        if (!(designator instanceof DesignatorNode)) {
+            new GestionErroresTiny().errorTipos("El designador debe ser designador");
+        }
+    }
+
+    @Override
+    public void generateCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    }
+
+    @Override
+    public TypeNode getType() {
+        return new ArrayTypeNode()
     }
 }

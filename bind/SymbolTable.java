@@ -1,8 +1,13 @@
 package bind;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import ast.ASTNode;
+import ast.BlockNode;
+import ast.FunctionNode;
+import ast.ParameterNode;
+import ast.TypeNode;
 
 // Implementamos el "scope manager" como un singleton
 
@@ -44,5 +49,14 @@ public class SymbolTable {
             }
         }
         return null;
+    }
+
+    public void changeFunctionNode(String name, ArrayList<ParameterNode> params, TypeNode returnType, BlockNode body) {
+        for (HashMap<String, ASTNode> scope : scopes) {
+            if (scope.containsKey(name)) {
+                FunctionNode node = (FunctionNode) scope.get(name);
+                node.modify(params, returnType, body);
+            }
+        }
     }
 }

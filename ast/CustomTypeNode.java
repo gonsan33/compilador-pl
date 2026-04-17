@@ -3,7 +3,7 @@ package ast;
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
 
-public class CustomTypeNode extends TypeNode{
+public class CustomTypeNode extends TypeNode {
     protected String identifier;
     protected TypeDeclarationNode declaration;
 
@@ -11,7 +11,9 @@ public class CustomTypeNode extends TypeNode{
         this.identifier = identifier;
     }
 
-    public String toString() {return identifier;}
+    public String toString() {
+        return identifier;
+    }
 
     @Override
     public void bind() {
@@ -28,11 +30,16 @@ public class CustomTypeNode extends TypeNode{
 
     @Override
     public boolean equals(TypeNode other) {
-        return this.getClass().equals(other.getClass()); 
+        return this.identifier.equals(other.typeName());
     }
 
     @Override
     public int size() {
-        return declaration.size(); 
+        return declaration.size();
+    }
+
+    @Override
+    public String typeName() {
+        return this.identifier;
     }
 }
