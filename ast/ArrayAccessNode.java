@@ -6,8 +6,6 @@ public class ArrayAccessNode extends DesignatorNode {
     protected ExpressionNode designator;
     protected ExpressionNode index;
 
-    protected Array
-
     public ArrayAccessNode(ExpressionNode designator, ExpressionNode index) {
         this.designator = designator;
         this.index = index;
@@ -19,7 +17,6 @@ public class ArrayAccessNode extends DesignatorNode {
 
     @Override
     public void bind() {
-
         designator.bind();
         index.bind();
     }
@@ -44,6 +41,6 @@ public class ArrayAccessNode extends DesignatorNode {
 
     @Override
     public TypeNode getType() {
-        return new ArrayTypeNode()
+        return designator.getType(); 
     }
 }

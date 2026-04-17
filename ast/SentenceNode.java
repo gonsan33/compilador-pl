@@ -1,20 +1,14 @@
 package ast;
 
-public class SentenceNode implements ASTNode{
+public abstract class SentenceNode implements ASTNode{
 
     @Override
-    public void bind() {
-        throw new UnsupportedOperationException("Unimplemented method 'bind'");
-    }
+    public abstract void bind();
 
     @Override
-    public void typeCheck() {
-        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
-    }
+    public abstract void typeCheck() ;
 
     @Override
-    public void generateCode() {
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
-    }
+    public abstract void generateCode() ;
 
 }

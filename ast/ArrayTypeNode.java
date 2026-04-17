@@ -20,19 +20,22 @@ public class ArrayTypeNode extends TypeNode{
 
     @Override
     public void typeCheck() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
+        Integer.parseInt(size); 
+        this.elementType.typeCheck();
     }
 
     @Override
     public boolean equals(TypeNode other) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'equals'");
+        return (other instanceof ArrayTypeNode) && this.elementType.equals(((ArrayTypeNode) other).elementType); 
     }
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'size'");
+        return this.elementType.size() * Integer.parseInt(this.size); 
+    }
+
+    @Override
+    public String typeName() {
+        return "Array(size = " + size + ", elementType = " + elementType + ")"; 
     }
 }

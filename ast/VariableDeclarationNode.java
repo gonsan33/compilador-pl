@@ -37,4 +37,8 @@ public class VariableDeclarationNode extends SentenceNode{
         if (newNode != null) newNode.bind();
         SymbolTable.getSymbolTable().insert(identifier, this);
     }
+
+    public TypeNode getType(){
+        return this.type; 
+    }
 }
