@@ -29,4 +29,17 @@ public class BlockNode extends SentenceNode {
         }
         st.closeScope();
     }
+
+    @Override
+    public void typeCheck() {
+        for(SentenceNode node: this.instructions) {
+            node.typeCheck(); 
+        }
+    }
+
+    @Override
+    public void generateCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    }
 }

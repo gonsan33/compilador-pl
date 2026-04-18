@@ -37,12 +37,16 @@ public class BinaryExpressionNode extends ExpressionNode {
             case LT: 
             case GEQ: 
             case GT: 
-            case EQ : 
                 if(! this.left.getType().equals( new IntTypeNode()) || ! this.right.getType().equals(new IntTypeNode()) ) new GestionErroresTiny().errorTipos("Error de tipos: ambos operandos deben tener tipo entero");
+                break; 
+            case EQ : 
+                boolean valid = this.left.getType().equals(new IntTypeNode())  && this.right.getType().equals(new IntTypeNode()) || this.left.getType().equals(new BoolTypeNode())  && this.right.getType().equals(new BoolTypeNode()) || this.left.getType().equals(this.right.getType()) && (this.left.getType()  instanceof PointerTypeNode); 
+                if(!valid) new GestionErroresTiny().errorTipos("Error de tipos: ambos operandos deben ser enteros, booleanos o punteros del mismo tipo");
                 break; 
             case AND: 
             case OR: 
                 if(! this.left.getType().equals( new BoolTypeNode()) || ! this.right.getType().equals(new BoolTypeNode()) ) new GestionErroresTiny().errorTipos("Error de tipos: ambos operandos deben tener tipo bool");
+                break; 
         }
     }
 
@@ -54,7 +58,25 @@ public class BinaryExpressionNode extends ExpressionNode {
 
     @Override
     public TypeNode getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
+        TypeNode result = null; 
+        switch(this.op) {
+            case SUM: 
+            case DIFFERENCE: 
+            case MULTIPLICATION: 
+            case DIVISION:
+            case MODULE:
+                result=  new IntTypeNode();  
+            case LEQ: 
+            case LT: 
+            case GEQ: 
+            case GT: 
+            case EQ : 
+            case AND: 
+            case OR: 
+                result=  new BoolTypeNode(); 
+        }
+        this.type = result; 
+        return result;       
+
     }
 }

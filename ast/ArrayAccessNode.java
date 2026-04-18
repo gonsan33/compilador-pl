@@ -31,6 +31,7 @@ public class ArrayAccessNode extends DesignatorNode {
         if (!(designator instanceof DesignatorNode)) {
             new GestionErroresTiny().errorTipos("El designador debe ser designador");
         }
+        this.type = designator.getType(); 
     }
 
     @Override

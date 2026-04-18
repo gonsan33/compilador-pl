@@ -47,4 +47,12 @@ public class StructTypeNode extends TypeNode{
         for( ParameterNode p : fields) res+= p.getType().size();
         return res; 
     }
+
+    public ParameterNode getField(String id) {
+        ParameterNode result = null; 
+        for(ParameterNode param: this.fields) {
+            if(param.getIdentifier().equals(id)) result = param; 
+        }
+        return result; 
+    }
 }

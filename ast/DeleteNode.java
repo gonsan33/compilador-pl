@@ -1,9 +1,12 @@
 package ast;
 
-public class DeleteNode extends SentenceNode{
-    protected ExpressionNode designator;
+import bind.SymbolTable;
+import errors.GestionErroresTiny;
 
-    public DeleteNode(ExpressionNode designator) {
+public class DeleteNode extends SentenceNode{
+    protected DesignatorNode designator;
+    protected VariableDeclarationNode declaration; 
+    public DeleteNode(DesignatorNode designator) {
         this.designator = designator;
     }
 
@@ -14,5 +17,18 @@ public class DeleteNode extends SentenceNode{
     @Override
     public void bind() {
         designator.bind();
+    }
+
+    @Override
+    public void typeCheck() {
+        //hay que comprobar que el designador es un puntero
+        designator.typeCheck();
+        if (! (designator.getType()  instanceof PointerTypeNode) ) new GestionErroresTiny().errorTipos("Error de tipos: solo se puede hacer delete de un puntero");
+    }
+
+    @Override
+    public void generateCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
 }

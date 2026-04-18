@@ -17,7 +17,7 @@ public class BoolTypeNode extends TypeNode {
 
     @Override
     public void bind() {
-
+        
     }
 
     @Override

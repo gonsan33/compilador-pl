@@ -11,5 +11,22 @@ public class BooleanNode extends ExpressionNode {
   public String toString() {
       if (v)return "true";
       else return "false";
+  }
+  @Override
+  public void bind() {
+    
+  }
+  @Override
+  public void typeCheck() {
+    
+  }
+  @Override
+  public void generateCode() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+  }
+  @Override
+  public TypeNode getType() {
+    return new BoolTypeNode(); 
   }  
 }

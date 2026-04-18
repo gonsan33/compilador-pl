@@ -21,4 +21,12 @@ public class ForNode extends ControlSentenceNode{
         if (step != null) step.bind();
         block.bind();
     }
+
+    @Override 
+    public void typeCheck() {
+        init.typeCheck(); 
+        super.typeCheck();
+        step.typeCheck(); 
+        if(!)
+    }
 }

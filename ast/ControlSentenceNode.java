@@ -25,6 +25,8 @@ public class ControlSentenceNode extends SentenceNode {
 
     @Override
     public void typeCheck() {
+        this.boolean_expression.typeCheck();
+        this.block.typeCheck();
         if (!boolean_expression.getType().equals(new BoolTypeNode()))
             new GestionErroresTiny().errorTipos("La expresión debe ser booleana");
     }

@@ -34,4 +34,8 @@ public class ParameterNode implements ASTNode{
     public boolean equals(ParameterNode other) {
         return this.identifier.equals(other.identifier) && this.type.equals(other.type); 
     }
+
+    public String getIdentifier() {
+        return this.identifier; 
+    }
 }
