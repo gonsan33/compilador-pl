@@ -1,6 +1,6 @@
 package ast;
 
-public class ForNode extends ControlSentenceNode{
+public class ForNode extends ControlSentenceNode {
     protected ExpressionNode init;
     protected ExpressionNode step;
 
@@ -11,22 +11,27 @@ public class ForNode extends ControlSentenceNode{
     }
 
     public String toString() {
-        return "For(init = " + init + ", cond = " + boolean_expression + ", step = " + step + ", block = " + block + ")";
+        return "For(init = " + init + ", cond = " + boolean_expression + ", step = " + step + ", block = " + block
+                + ")";
     }
 
     @Override
     public void bind() {
-        if (init != null) init.bind();
-        if (boolean_expression != null) boolean_expression.bind();
-        if (step != null) step.bind();
+        if (init != null)
+            init.bind();
+        if (boolean_expression != null)
+            boolean_expression.bind();
+        if (step != null)
+            step.bind();
         block.bind();
     }
 
-    @Override 
+    @Override
     public void typeCheck() {
-        init.typeCheck(); 
+        if (init != null)
+            init.typeCheck();
         super.typeCheck();
-        step.typeCheck(); 
-        if(!)
+        if (step != null)
+            step.typeCheck();
     }
 }

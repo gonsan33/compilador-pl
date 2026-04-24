@@ -1,6 +1,6 @@
 package ast;
 
-public class PointerTypeNode extends TypeNode{
+public class PointerTypeNode extends TypeNode {
     protected TypeNode baseType;
 
     public PointerTypeNode(TypeNode baseType) {
@@ -23,12 +23,21 @@ public class PointerTypeNode extends TypeNode{
 
     @Override
     public boolean equals(TypeNode other) {
-        return other.getClass().equals(this.getClass()) && ((PointerTypeNode) other).baseType.equals(this.baseType); 
+        return other.getClass().equals(this.getClass()) && ((PointerTypeNode) other).baseType.equals(this.baseType);
 
     }
 
     @Override
     public int size() {
-        return 4; 
+        return 4;
+    }
+
+    public TypeNode getBaseType() {
+        return this.baseType;
+    }
+
+    @Override
+    public String typeName() {
+        return "Pointer(" + baseType.typeName() + ")";
     }
 }

@@ -2,7 +2,7 @@ package ast;
 
 import bind.SymbolTable;
 
-public class TypeDeclarationNode extends SentenceNode{
+public class TypeDeclarationNode extends SentenceNode {
     protected String identifier;
     protected TypeNode type;
 
@@ -22,6 +22,17 @@ public class TypeDeclarationNode extends SentenceNode{
     }
 
     public int size() {
-        return type.size(); 
+        return type.size();
+    }
+
+    @Override
+    public void typeCheck() {
+        type.typeCheck();
+    }
+
+    @Override
+    public void generateCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
 }

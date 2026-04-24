@@ -109,9 +109,9 @@ T2 ::= IDEN:id {: RESULT = new CustomTypeNode(id.lexema); :} | BOOL {: RESULT = 
 
 DECL_STRUCT ::= STRUCT PAP LISTA_DECLARACIONES:l PCIERRE {: RESULT = new StructTypeNode(l); :};
 LISTA_DECLARACIONES ::= IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:t LISTA_DECLARACIONES_REST:r {: r.add(0, new ParameterNode(id.lexema, t)); RESULT = r; :}
- | {: RESULT = new ArrayList<ParameterNode>(); :};
+ | {: RESULT = new ArrayList<ParameterNode>(); :} | IDEN:id DOSPUNTOS AMPERSAND TIPO_DE_VARIABLE:t LISTA_DECLARACIONES_REST:r {: r.add(0, new ParameterNode(id.lexema, t,0)); RESULT = r; :};
 LISTA_DECLARACIONES_REST ::= COMA IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:t LISTA_DECLARACIONES_REST:r {: r.add(0, new ParameterNode(id.lexema, t)); RESULT = r; :}
- | {: RESULT = new ArrayList<ParameterNode>(); :};
+ | {: RESULT = new ArrayList<ParameterNode>(); :} | COMA IDEN:id DOSPUNTOS AMPERSAND TIPO_DE_VARIABLE:t LISTA_DECLARACIONES_REST:r {: r.add(0, new ParameterNode(id.lexema, t,0)); RESULT = r; :};
 DECL_TIPO ::= TYPEDEF IDEN:id DOSPUNTOS TIPO_DE_VARIABLE:t {: RESULT = new TypeDeclarationNode(id.lexema, t); :};
 DECL_FUNCION ::= FUNDEF IDEN:id PAP LISTA_DECLARACIONES:l PCIERRE TFUN:t {: RESULT = new FunctionNode(id.lexema, l, t, null); :};
 TFUN ::= DOSPUNTOS TIPO_DE_VARIABLE:t {: RESULT = t; :} | {: RESULT = null; :};

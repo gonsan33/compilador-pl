@@ -1,7 +1,7 @@
 package ast;
 
 public class NewNode implements ASTNode {
-    protected TypeNode type; 
+    protected TypeNode type;
 
     public NewNode(TypeNode type) {
         this.type = type;
@@ -18,11 +18,19 @@ public class NewNode implements ASTNode {
 
     @Override
     public void typeCheck() {
-        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
+        type.typeCheck();
     }
 
     @Override
     public void generateCode() {
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    }
+
+    public TypeNode getBaseLineType() {
+        return this.type;
+    }
+
+    public TypeNode getType() {
+        return new PointerTypeNode(this.type);
     }
 }

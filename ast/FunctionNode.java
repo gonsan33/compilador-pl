@@ -1,5 +1,6 @@
 package ast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
@@ -64,4 +65,26 @@ public class FunctionNode extends SentenceNode {
         this.returnType = returnType;
         this.body = body;
     }
+
+    public ArrayList<ParameterNode> getParams() {
+        return params;
+    }
+
+    @Override
+    public void typeCheck() {
+        this.body.setFunction(this);
+        for (ParameterNode param : params)
+            param.typeCheck();
+        if (returnType != null)
+            returnType.typeCheck();
+        if (body != null)
+            body.typeCheck();
+    }
+
+    @Override
+    public void generateCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    }
+
 }

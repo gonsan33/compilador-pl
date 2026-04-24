@@ -3,7 +3,7 @@ package ast;
 import java.sql.Struct;
 import java.util.ArrayList;
 
-public class StructTypeNode extends TypeNode{
+public class StructTypeNode extends TypeNode {
     protected ArrayList<ParameterNode> fields;
 
     public StructTypeNode(ArrayList<ParameterNode> fields) {
@@ -23,36 +23,50 @@ public class StructTypeNode extends TypeNode{
 
     @Override
     public void typeCheck() {
-        for( ParameterNode p : fields) p.typeCheck();
+        for (ParameterNode p : fields) {
+            p.typeCheck();
+            if (p.esPorReferencia()) {
+                new errors.GestionErroresTiny().errorTipos("Los campos de un struct no pueden ser por referencia");
+            }
+        }
     }
 
     @Override
     public boolean equals(TypeNode other) {
-        if(other.getClass().equals(this.getClass())) {
-            StructTypeNode otherStruct = (StructTypeNode) other; 
-            if(otherStruct.fields.size() != this.fields.size()) return false; 
+        if (other.getClass().equals(this.getClass())) {
+            StructTypeNode otherStruct = (StructTypeNode) other;
+            if (otherStruct.fields.size() != this.fields.size())
+                return false;
 
-            for(int i = 0; i < this.fields.size(); ++i) {
-                if(!this.fields.get(i).equals(otherStruct.fields.get(i))) return false; 
+            for (int i = 0; i < this.fields.size(); ++i) {
+                if (!this.fields.get(i).equals(otherStruct.fields.get(i)))
+                    return false;
             }
-            
-            return true; 
+
+            return true;
         }
-        return false; 
+        return false;
     }
 
     @Override
     public int size() {
-        int res = 0; 
-        for( ParameterNode p : fields) res+= p.getType().size();
-        return res; 
+        int res = 0;
+        for (ParameterNode p : fields)
+            res += p.getType().size();
+        return res;
     }
 
     public ParameterNode getField(String id) {
-        ParameterNode result = null; 
-        for(ParameterNode param: this.fields) {
-            if(param.getIdentifier().equals(id)) result = param; 
+        ParameterNode result = null;
+        for (ParameterNode param : this.fields) {
+            if (param.getIdentifier().equals(id))
+                result = param;
         }
-        return result; 
+        return result;
+    }
+
+    @Override
+    public String typeName() {
+        return "struct";
     }
 }

@@ -2,13 +2,21 @@ package ast;
 
 import bind.SymbolTable;
 
-public class ParameterNode implements ASTNode{
+public class ParameterNode implements ASTNode {
     protected String identifier;
     protected TypeNode type;
+    protected boolean ref;
 
     public ParameterNode(String identifier, TypeNode type) {
         this.identifier = identifier;
         this.type = type;
+        this.ref = false;
+    }
+
+    public ParameterNode(String identifier, TypeNode type, int a) {
+        this.identifier = identifier;
+        this.type = type;
+        this.ref = true;
     }
 
     public String toString() {
@@ -22,20 +30,27 @@ public class ParameterNode implements ASTNode{
     }
 
     @Override
-    public void typeCheck() {}
+    public void typeCheck() {
+        type.typeCheck();
+    }
 
     @Override
-    public void generateCode() {}
+    public void generateCode() {
+    }
 
     public TypeNode getType() {
-        return this.type; 
+        return this.type;
     }
 
     public boolean equals(ParameterNode other) {
-        return this.identifier.equals(other.identifier) && this.type.equals(other.type); 
+        return this.identifier.equals(other.identifier) && this.type.equals(other.type) && this.ref == other.ref;
     }
 
     public String getIdentifier() {
-        return this.identifier; 
+        return this.identifier;
+    }
+
+    public boolean esPorReferencia() {
+        return this.ref;
     }
 }
