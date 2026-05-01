@@ -54,4 +54,9 @@ public class ParameterNode implements ASTNode {
     public boolean esPorReferencia() {
         return this.ref;
     }
+
+    @Override
+    public StringBuilder generateCode() {
+        return new StringBuilder();
+    }
 }

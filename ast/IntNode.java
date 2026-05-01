@@ -22,9 +22,11 @@ public class IntNode extends ExpressionNode {
   }
 
   @Override
-  public void generateCode() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+  public StringBuilder generateCode() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("i32.const " + this.v); 
+    sb.append("\n");
+    return sb;
   }
 
   @Override

@@ -22,7 +22,7 @@ public class NewNode implements ASTNode {
     }
 
     @Override
-    public void generateCode() {
+    public StringBuilder generateCode() {
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
 

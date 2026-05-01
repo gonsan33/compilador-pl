@@ -40,8 +40,11 @@ public class ProgramNode extends SentenceNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder sb = new StringBuilder();
+        for (SentenceNode instruction : instructions) {
+            sb.append(instruction.generateCode());
+        }
+        return sb;  
     }
 }

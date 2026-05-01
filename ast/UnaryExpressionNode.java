@@ -37,9 +37,26 @@ public class UnaryExpressionNode extends ExpressionNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder code = new StringBuilder();
+        switch(op) {
+            case AMPERSAND:
+                code.append(((DesignatorNode)(this.exp)).generateCodeL()); 
+            break;
+            case MAS:
+                code.append(exp.generateCode());
+                break;
+            case MENOS:
+                code.append("i32.const 0\n");
+                code.append(exp.generateCode());
+                code.append("i32.sub\n");
+                break;
+            case NOT:
+                code.append(exp.generateCode());
+                code.append("i32.eqz\n");
+                break;
+        }
+        return code;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class FunctionCallNode extends ExpressionNode {
     }
 
     @Override
-    public void generateCode() {
+    public StringBuilder generateCode() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }

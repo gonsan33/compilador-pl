@@ -3,7 +3,8 @@ package ast;
 public abstract class TypeNode implements ASTNode {
 
     @Override
-    public void generateCode() {
+    public StringBuilder generateCode() {
+        return new StringBuilder();
     }
 
     public abstract boolean equals(TypeNode other);

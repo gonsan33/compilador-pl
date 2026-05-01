@@ -33,8 +33,10 @@ public class ReturnNode extends SentenceNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder code = new StringBuilder();
+        code.append(this.expression.generateCode()); 
+        code.append("return\n"); 
+        return code;
     }
 }

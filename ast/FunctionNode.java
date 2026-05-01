@@ -79,10 +79,11 @@ public class FunctionNode extends SentenceNode {
             returnType.typeCheck();
         if (body != null)
             body.typeCheck();
+        
     }
 
     @Override
-    public void generateCode() {
+    public StringBuilder generateCode() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }

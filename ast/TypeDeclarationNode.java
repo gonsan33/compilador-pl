@@ -31,8 +31,7 @@ public class TypeDeclarationNode extends SentenceNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        return new StringBuilder();
     }
 }
