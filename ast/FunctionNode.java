@@ -40,7 +40,7 @@ public class FunctionNode extends SentenceNode {
          * la declaración su código.
          */
         FunctionNode oldDeclaration = (FunctionNode) st.lookup(identifier);
-        if (oldDeclaration.body == null && this.body != null) {
+        if (oldDeclaration != null && oldDeclaration.body == null && this.body != null) {
             oldDeclaration.modify(this.params, this.returnType, this.body);
         } else
             new GestionErroresTiny()
