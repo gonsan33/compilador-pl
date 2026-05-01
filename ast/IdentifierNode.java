@@ -5,7 +5,7 @@ import errors.GestionErroresTiny;
 
 public class IdentifierNode extends DesignatorNode{
     protected String identifier;
-    protected VariableDeclarationNode declaration;
+    protected ASTNode declaration;
 
     public IdentifierNode(String identifier) {
         this.identifier = identifier;
@@ -15,7 +15,7 @@ public class IdentifierNode extends DesignatorNode{
 
     @Override
     public void bind() {
-        declaration = (VariableDeclarationNode) SymbolTable.getSymbolTable().lookup(identifier);
+        declaration = (ASTNode) SymbolTable.getSymbolTable().lookup(identifier);
         if (declaration == null) {
             new GestionErroresTiny().errorBinding("Identificador no declarado: " + identifier);
         }
@@ -30,12 +30,15 @@ public class IdentifierNode extends DesignatorNode{
 
     @Override
     public TypeNode getType() {
-        return this.declaration.getType(); 
+        if (declaration instanceof ParameterNode) return ((ParameterNode) declaration).getType();
+        return ((VariableDeclarationNode) declaration).getType();
     }
 
-    
+
     public int delta() {
-        this.delta = this.declaration.getDelta();
+        this.delta = (declaration instanceof ParameterNode)
+            ? ((ParameterNode) declaration).getDelta()
+            : ((VariableDeclarationNode) declaration).getDelta();
         return this.delta;
     }
 
