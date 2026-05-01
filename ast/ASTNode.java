@@ -5,5 +5,8 @@ public interface ASTNode {
     public void bind(); 
     public void typeCheck();
     public StringBuilder generateCode();  
+    public default int asignarDelta(int acum){
+        return acum;
+    }
 }
 

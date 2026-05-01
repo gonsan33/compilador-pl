@@ -35,8 +35,15 @@ public class ArrayAccessNode extends DesignatorNode {
     }
 
     @Override
-    public StringBuilder generateCode() {
-        StringBuilder str = new StringBuilder();
+    public TypeNode getType() {
+        return designator.getType(); 
+    }
+
+
+
+    @Override
+    public StringBuilder generateCodeL() {
+         StringBuilder str = new StringBuilder();
 
         str.append(this.designator.generateCode());
         str.append(this.index.generateCode());
@@ -51,15 +58,5 @@ public class ArrayAccessNode extends DesignatorNode {
         }
         
         return str;
-    }
-
-    @Override
-    public TypeNode getType() {
-        return designator.getType(); 
-    }
-
-    @Override
-    public int delta() {
-        return 0;
     }
 }

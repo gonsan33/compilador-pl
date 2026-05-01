@@ -39,6 +39,7 @@ public class IdentifierNode extends DesignatorNode{
         return this.delta;
     }
 
+
     @Override
     public StringBuilder generateCodeL() {
         StringBuilder code = new StringBuilder();

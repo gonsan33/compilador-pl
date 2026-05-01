@@ -69,4 +69,12 @@ public class StructTypeNode extends TypeNode {
     public String typeName() {
         return "struct";
     }
+
+    public int asignarDelta(int acum) {
+        for (ParameterNode p : fields) {
+            p.setDelta(acum);
+            acum += p.getType().size();
+        }
+        return acum;
+    }   
 }

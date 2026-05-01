@@ -42,4 +42,6 @@ public class ArrayTypeNode extends TypeNode{
     public String typeName() {
         return "Array(size = " + size + ", elementType = " + elementType + ")"; 
     }
+
+ 
 }

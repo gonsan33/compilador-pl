@@ -39,6 +39,10 @@ public class ParameterNode implements ASTNode {
         return this.delta;
     }
 
+    public void setDelta(int delta) {
+        this.delta = delta;
+    }
+
     public TypeNode getType() {
         return this.type;
     }

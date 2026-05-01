@@ -68,6 +68,10 @@ public class VariableDeclarationNode extends SentenceNode {
         return this.delta;
     }
 
+    public void setDelta(int delta) {
+        this.delta = delta;
+    }
+
     @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder(); 
@@ -83,5 +87,11 @@ public class VariableDeclarationNode extends SentenceNode {
             
         }
         return str; 
+    }
+
+    public int asignarDelta(int acum) {
+        this.delta=acum;
+        type.asignarDelta(0);
+        return acum+type.size();  
     }
 }
