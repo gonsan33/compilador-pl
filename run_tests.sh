@@ -16,7 +16,7 @@ fi
 # Generar parser en caso de que no lo esté ya (no lo incluimos en el repo porque es algo "generable")
 if [ ! -f asint/AnalizadorSintacticoTiny.java ]; then
     echo "Generadno parser apartir de Tiny.cup"
-    java -cp cup.jar java_cup.Main -parser AnalizadorSintacticoTiny -symbols ClaseLexica -nopositions Tiny.cup
+    java -cp cup.jar java_cup.Main -parser AnalizadorSintacticoTiny -symbols ClaseLexica -nopositions -expect 38 Tiny.cup
     mv AnalizadorSintacticoTiny.java asint/
     mv ClaseLexica.java asint/
 fi

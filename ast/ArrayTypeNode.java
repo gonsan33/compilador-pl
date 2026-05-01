@@ -34,6 +34,10 @@ public class ArrayTypeNode extends TypeNode{
         return this.elementType.size() * Integer.parseInt(this.size); 
     }
 
+    public TypeNode getElementType() {
+        return this.elementType;
+    }
+
     @Override
     public String typeName() {
         return "Array(size = " + size + ", elementType = " + elementType + ")"; 
