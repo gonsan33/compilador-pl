@@ -40,13 +40,14 @@ public class FunctionNode extends SentenceNode {
          * la declaración su código.
          */
         FunctionNode oldDeclaration = (FunctionNode) st.lookup(identifier);
-        if (oldDeclaration != null && oldDeclaration.body == null && this.body != null) {
+        if (oldDeclaration == null) {
+            st.insert(identifier, this);
+        } else if (oldDeclaration.body == null && this.body != null) {
             oldDeclaration.modify(this.params, this.returnType, this.body);
-        } else
+        } else {
             new GestionErroresTiny()
                     .errorBinding("No se permite declarar dos veces una funcion o redefinirla: " + identifier);
-
-        st.insert(identifier, this);
+        }
 
         if (returnType != null)
             returnType.bind();
