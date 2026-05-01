@@ -8,5 +8,6 @@ public interface ASTNode {
     public default int asignarDelta(int acum){
         return acum;
     }
+
 }
 

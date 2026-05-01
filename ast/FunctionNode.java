@@ -89,4 +89,8 @@ public class FunctionNode extends SentenceNode {
         throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
 
+    public TypeNode getReturnType() {
+        return returnType;
+    }
+
 }

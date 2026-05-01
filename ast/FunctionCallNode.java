@@ -49,13 +49,46 @@ public class FunctionCallNode extends ExpressionNode {
 
     @Override
     public StringBuilder generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+        StringBuilder str = new StringBuilder(); 
+        for (int i = 0; i < args.size(); ++i) {
+            generarCodigoArgumento(args.get(i), i, str);
+        }
+        str.append("call $" + identifier + "\n"); // REVISAR ESTO !!!!!!!!!!
+        return str;
     }
 
     @Override
     public TypeNode getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
+        return declaration.getReturnType();
+    }
+
+    private void generarCodigoArgumento(ExpressionNode arg, int index, StringBuilder str) {
+        ParameterNode param = declaration.getParams().get(index); 
+        //Parámetro por valor básico 
+        if(!param.esPorReferencia() && (param.getType().equals(new IntTypeNode()) || param.getType().equals(new BoolTypeNode()))  ) {
+            str.append("global.get $SP\n"); 
+            str.append("i32.const " + param.getDelta() + "\n");
+            str.append("i32.add\n");
+            str.append(arg.generateCode());
+            str.append("i32.store offset = 4\n");
+        }
+        //parámetro por referencia 
+        else if(param.esPorReferencia()) {
+            str.append("global.get $SP\n"); 
+            str.append("i32.const " + param.getDelta() + "\n");
+            str.append("i32.add\n");
+            str.append(((DesignatorNode) arg).generateCodeL());
+            str.append("i32.store offset = 4\n");
+        }
+
+        else { //parámetro por valor complicado 
+            str.append(((DesignatorNode) arg).generateCodeL());
+            str.append("global.get $SP\n"); 
+            str.append("i32.const " + (param.getDelta()+4) + "\n");
+            str.append("i32.add\n");
+            str.append("i32.const " + param.getType()); 
+            str.append("copyn"); 
+        }
+        
     }
 }
