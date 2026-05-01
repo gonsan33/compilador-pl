@@ -94,7 +94,7 @@ public class BinaryExpressionNode extends ExpressionNode {
                 str.append("i32.or"); 
                 break; 
         }
-        str.append("\n"); 
+        str.append(System.lineSeparator()); 
         return str; 
     }
 

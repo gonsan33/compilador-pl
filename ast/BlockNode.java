@@ -39,9 +39,12 @@ public class BlockNode extends SentenceNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder str = new StringBuilder();
+        for (SentenceNode instruction : this.instructions) {
+            str.append(instruction.generateCode());
+        }
+        return str;
     }
 
     public void setFunction(FunctionNode function) {

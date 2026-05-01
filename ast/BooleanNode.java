@@ -21,9 +21,10 @@ public class BooleanNode extends ExpressionNode {
     
   }
   @Override
-  public void generateCode() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+  public StringBuilder generateCode() {
+    StringBuilder str = new StringBuilder();
+    str.append("i32.const ").append(this.v ? 1 : 0).append(System.lineSeparator());
+    return str;
   }
   @Override
   public TypeNode getType() {

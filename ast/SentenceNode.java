@@ -9,6 +9,6 @@ public abstract class SentenceNode implements ASTNode{
     public abstract void typeCheck() ;
 
     @Override
-    public abstract void generateCode() ;
+    public abstract StringBuilder generateCode() ;
 
 }

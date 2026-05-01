@@ -30,7 +30,8 @@ terminal     MAS, MENOS, POR, DIV, PAP, PCIERRE, CAP, CCIERRE, LLAP, LLCIERRE,
              NEW, DELETE, BOOL, INT, TYPEDEF, STRUCT, TRUE, FALSE, PRINT, SCAN, PUNTO;
 
 
-non terminal ExpressionNode EXPRESION, E0, E1, E2, E3, DESIGNADOR, D1, D2, LLAMADA_FUNCION, EXPRESION_OPT;
+non terminal ExpressionNode EXPRESION, E0, E1, E2, E3, LLAMADA_FUNCION, EXPRESION_OPT;
+non terminal DesignatorNode DESIGNADOR, D1, D2, D3;
 non terminal TypeNode TIPO_DE_VARIABLE, T1, T2;
 non terminal ProgramNode PROGRAMA;
 non terminal ArrayList<SentenceNode> LISTA_INSTRUCCIONES;
