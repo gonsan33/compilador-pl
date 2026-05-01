@@ -27,14 +27,24 @@ public class IdentifierNode extends DesignatorNode{
         throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
     }
 
-    @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
-    }
 
     @Override
     public TypeNode getType() {
         return this.declaration.getType(); 
+    }
+
+    
+    public int delta() {
+        this.delta = this.declaration.getDelta();
+        return this.delta;
+    }
+
+    @Override
+    public StringBuilder generateCodeL() {
+        StringBuilder code = new StringBuilder();
+        code.append("i32.const "+ this.delta() + "\n");
+        code.append("local.get $localsStart\n");
+        code.append("i32.add\n");   
+        return code;
     }
 }
