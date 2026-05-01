@@ -2,7 +2,7 @@ package ast;
 
 import errors.GestionErroresTiny;
 
-public class ControlSentenceNode extends SentenceNode {
+public abstract class ControlSentenceNode extends SentenceNode {
     protected ExpressionNode boolean_expression;
     protected BlockNode block;
 
@@ -31,8 +31,5 @@ public class ControlSentenceNode extends SentenceNode {
             new GestionErroresTiny().errorTipos("La expresión debe ser booleana");
     }
 
-    @Override
-    public void generateCode() {
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
-    }
+    public abstract  StringBuilder generateCode(); 
 }

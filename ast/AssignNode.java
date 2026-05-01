@@ -3,10 +3,10 @@ package ast;
 import errors.GestionErroresTiny;
 
 public class AssignNode extends SentenceNode{
-    protected ExpressionNode designated;
+    protected DesignatorNode designated;
     protected ExpressionNode expression;
 
-    public AssignNode(ExpressionNode designated, ExpressionNode expression) {
+    public AssignNode(DesignatorNode designated, ExpressionNode expression) {
         this.designated = designated;
         this.expression = expression;
     }
@@ -29,8 +29,11 @@ public class AssignNode extends SentenceNode{
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder str= new StringBuilder();
+        str.append(this.designated.generateCodeL());
+        str.append(this.expression.generateCode());
+        str.append("i32.store\n");
+        return str;
     }
 }

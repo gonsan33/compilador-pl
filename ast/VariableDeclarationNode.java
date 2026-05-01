@@ -7,7 +7,7 @@ public class VariableDeclarationNode extends SentenceNode {
     protected TypeNode type;
     protected ExpressionNode expression = null;
     protected NewNode newNode = null;
-
+    protected int delta; 
     public VariableDeclarationNode(String id, TypeNode type) {
         this.identifier = id;
         this.type = type;
@@ -64,9 +64,24 @@ public class VariableDeclarationNode extends SentenceNode {
         }
     }
 
+    public int getDelta() {
+        return this.delta;
+    }
+
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder str = new StringBuilder(); 
+        if(this.expression != null) {
+            str.append("i32.const " + this.delta); 
+            str.append("\n");
+            str.append("local.get $localsStart\n"); 
+            str.append("i32.add\n");
+            str.append(this.expression.generateCode());
+            str.append("i32.store\n");
+        }
+        if(this.newNode != null) {
+            
+        }
+        return str; 
     }
 }
