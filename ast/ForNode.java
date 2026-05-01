@@ -1,10 +1,10 @@
 package ast;
 
 public class ForNode extends ControlSentenceNode {
-    protected ExpressionNode init;
-    protected ExpressionNode step;
+    protected SentenceNode init;
+    protected SentenceNode step;
 
-    public ForNode(ExpressionNode init, ExpressionNode boolean_expression, ExpressionNode step, BlockNode block) {
+    public ForNode(SentenceNode init, ExpressionNode boolean_expression, SentenceNode step, BlockNode block) {
         super(boolean_expression, block);
         this.init = init;
         this.step = step;
