@@ -29,4 +29,18 @@ public class IfNode extends ControlSentenceNode {
         if (elseBlock != null)
             elseBlock.typeCheck();
     }
+
+    @Override
+    public StringBuilder generateCode() {
+        StringBuilder str = new StringBuilder();
+        str.append(this.boolean_expression.generateCode());
+        str.append("if"); 
+        str.append(this.block.generateCode());
+        if (elseBlock != null) {
+            str.append("else \n");
+            str.append(elseBlock.generateCode());
+        }
+        str.append("end \n");
+        return str;
+    }
 }

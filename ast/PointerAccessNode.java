@@ -3,9 +3,9 @@ package ast;
 import errors.GestionErroresTiny;
 
 public class PointerAccessNode extends DesignatorNode {
-    protected ExpressionNode designator;
+    protected DesignatorNode designator;
 
-    public PointerAccessNode(ExpressionNode designator) {
+    public PointerAccessNode(DesignatorNode designator) {
         this.designator = designator;
     }
 
@@ -26,13 +26,17 @@ public class PointerAccessNode extends DesignatorNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
-    }
-
-    @Override
     public TypeNode getType() {
         return ((PointerTypeNode) this.designator.getType()).getBaseType();
     }
+
+
+    @Override
+    public StringBuilder generateCodeL() {
+        StringBuilder str = new StringBuilder();
+        str.append(designator.generateCodeL());
+        str.append("i32.load\n");
+        return str;
+    }
+
 }

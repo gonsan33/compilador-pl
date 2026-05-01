@@ -6,6 +6,7 @@ public class ParameterNode implements ASTNode {
     protected String identifier;
     protected TypeNode type;
     protected boolean ref;
+    protected int delta; 
 
     public ParameterNode(String identifier, TypeNode type) {
         this.identifier = identifier;
@@ -34,8 +35,8 @@ public class ParameterNode implements ASTNode {
         type.typeCheck();
     }
 
-    @Override
-    public void generateCode() {
+    public int getDelta() {
+        return this.delta;
     }
 
     public TypeNode getType() {
