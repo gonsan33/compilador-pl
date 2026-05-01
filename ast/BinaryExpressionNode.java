@@ -51,9 +51,51 @@ public class BinaryExpressionNode extends ExpressionNode {
     }
 
     @Override
-    public void generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+    public StringBuilder generateCode() {
+        StringBuilder str = new StringBuilder();
+        str.append(this.left.generateCode()); 
+        str.append(this.right.generateCode()); 
+        switch (op) {
+            case SUM:
+                str.append("i32.add");  
+                break; 
+            case DIFFERENCE: 
+                str.append("i32.sub"); 
+                break; 
+            case MULTIPLICATION:
+                str.append("i32.mul");  
+                break;  
+            case DIVISION:
+                str.append("i32.div_s");
+                break; 
+            case MODULE:
+                str.append("i32.rem_s");
+                break; 
+            case LEQ: 
+                str.append("i32.le_s");
+                break; 
+            case LT:
+                str.append("i32.lt_s"); 
+                break;  
+            case GEQ: 
+                str.append("i32.ge_s"); 
+                break; 
+            case GT: 
+                str.append("i32.gt_s"); 
+
+                break; 
+            case EQ : 
+                str.append("i32.eq_s"); 
+                break; 
+            case AND:
+                str.append("i32.and"); 
+                break;  
+            case OR: 
+                str.append("i32.or"); 
+                break; 
+        }
+        str.append("\n"); 
+        return str; 
     }
 
     @Override
