@@ -86,7 +86,7 @@ public class FunctionCallNode extends ExpressionNode {
             str.append("global.get $SP\n"); 
             str.append("i32.const " + (param.getDelta()+4) + "\n");
             str.append("i32.add\n");
-            str.append("i32.const " + param.getType()); 
+            str.append("i32.const " + param.getType().size() + "\n"); 
             str.append("copyn"); 
         }
         
