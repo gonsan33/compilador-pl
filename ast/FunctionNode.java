@@ -101,12 +101,13 @@ public class FunctionNode extends SentenceNode {
         str.append("  i32.swap\n");
         str.append("  i32.store\n"); 
         str.append(body.generateCode());
+        //Epilogo, es basicamente el $freeStack de Albert
         str.append("  global.get $MP\n");
         str.append("  global.set $SP\n");
         str.append("  global.get $MP\n");
         str.append("  i32.load\n");
         str.append("  global.set $MP\n");
-        if (returnType != null) {
+        if (returnType != null) {//Si es tipo void, no tengo claro si esto es necesario, pero por si acaso, lo dejo
             str.append("  i32.const 0\n"); 
         }
         str.append("  return\n");
@@ -116,6 +117,18 @@ public class FunctionNode extends SentenceNode {
 
     public TypeNode getReturnType() {
         return returnType;
+    }
+
+    @Override
+    public void typeCheck() {
+        this.body.setFunction(this);
+        for (ParameterNode param : params)
+            param.typeCheck();
+        if (returnType != null)
+            returnType.typeCheck();
+        if (body != null)
+            body.typeCheck();
+        
     }
 
 }
