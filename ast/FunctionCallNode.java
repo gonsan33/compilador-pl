@@ -55,7 +55,6 @@ public class FunctionCallNode extends ExpressionNode {
 
     @Override
     public TypeNode getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
+        return declaration.getReturnType();
     }
 }

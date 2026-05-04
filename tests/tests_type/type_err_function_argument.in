@@ -1,0 +1,6 @@
+fn takesInt(x : int) : int {
+    return x;
+}
+
+var y : int = takesInt(true);
+

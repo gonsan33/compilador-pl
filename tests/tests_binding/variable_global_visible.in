@@ -1,0 +1,6 @@
+var x : int = 7;
+
+fn useGlobal() : int {
+    return x;
+}
+

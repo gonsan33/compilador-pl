@@ -71,6 +71,10 @@ public class FunctionNode extends SentenceNode {
         return params;
     }
 
+    public TypeNode getReturnType() {
+        return returnType;
+    }
+
     @Override
     public void typeCheck() {
         this.body.setFunction(this);

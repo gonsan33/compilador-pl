@@ -22,7 +22,7 @@ if [ ! -f asint/AnalizadorSintacticoTiny.java ]; then
 fi
 
 # Compilar todo
-if ! javac -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java; then
+if ! javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java; then
     echo "Compilacion fallida: no se ejecutan los tests." >&2
     exit 1
 fi
@@ -33,18 +33,29 @@ echo ""
 
 echo "Testear Binding"
 BIND_DIR="tests/tests_binding"
+bind_ok=0
+bind_fail=0
 
 if [ -d "$BIND_DIR" ]; then
     for f in "$BIND_DIR"/*.in; do
         [ -f "$f" ] || continue
-        echo "Testeando $f"
-        java -cp "$CP" Main "$f"
+        output=$(java -cp "$CP" Main "$f" 2>&1)
         exit_code=$?
         if [ $exit_code -eq 0 ]; then
-            echo "OK"
+            echo "  OK   $f"
+            bind_ok=$((bind_ok + 1))
         else
-            echo "FAIL (exit $exit_code)"
+            echo "  FAIL $f (exit $exit_code)"
+            printf '%s\n' "$output"
+            bind_fail=$((bind_fail + 1))
         fi
-        echo ""
     done
 fi
+echo "--- Resultados binding: $bind_ok OK, $bind_fail FAIL de $((bind_ok + bind_fail)) ficheros ---"
+if [ $bind_fail -gt 0 ]; then
+    exit 1
+fi
+
+echo ""
+echo "Testear Tipado"
+java -cp "$CP" tests.tests_type.TypeTest

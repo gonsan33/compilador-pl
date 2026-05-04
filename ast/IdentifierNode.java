@@ -23,17 +23,16 @@ public class IdentifierNode extends DesignatorNode{
 
     @Override
     public void typeCheck() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'typeCheck'");
+        if (declaration == null) {
+            new errors.GestionErroresTiny().errorTipos("Identificador sin declaracion: " + identifier);
+        }
     }
-
 
     @Override
     public TypeNode getType() {
         if (declaration instanceof ParameterNode) return ((ParameterNode) declaration).getType();
         return ((VariableDeclarationNode) declaration).getType();
     }
-
 
     public int delta() {
         this.delta = (declaration instanceof ParameterNode)
@@ -42,13 +41,12 @@ public class IdentifierNode extends DesignatorNode{
         return this.delta;
     }
 
-
     @Override
     public StringBuilder generateCodeL() {
         StringBuilder code = new StringBuilder();
         code.append("i32.const "+ this.delta() + "\n");
         code.append("local.get $localsStart\n");
-        code.append("i32.add\n");   
+        code.append("i32.add\n");
         return code;
     }
 }

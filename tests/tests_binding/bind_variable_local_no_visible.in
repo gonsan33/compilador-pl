@@ -1,0 +1,9 @@
+fn declaresLocal() : int {
+    var x : int = 1;
+    return x;
+}
+
+fn usesMissingLocal() : int {
+    return x;
+}
+

@@ -1,0 +1,10 @@
+var x : int = 1;
+var y : int = x + 2;
+var b : bool = y > 0;
+
+fn isPositive(n : int) : bool {
+    return n > 0;
+}
+
+var result : bool = isPositive(y);
+

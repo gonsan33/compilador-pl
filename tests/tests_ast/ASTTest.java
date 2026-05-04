@@ -18,7 +18,6 @@ public class ASTTest {
         Arrays.sort(inputs);
         int ok = 0, fail = 0;
         for (File f : inputs) {
-            System.out.println("Testeando  " + f.getName() + "");
             String cp = "." + File.pathSeparator + "cup.jar";
             ProcessBuilder pb = new ProcessBuilder(
                 "java", "-cp", cp,
@@ -26,22 +25,29 @@ public class ASTTest {
             );
             pb.redirectErrorStream(true);
             Process proc = pb.start();
-            BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
+
+            StringBuilder output = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    output.append(line).append(System.lineSeparator());
+                }
             }
+
             int exit = proc.waitFor();
             if (exit == 0) {
-                System.out.println("OK");
+                System.out.println("  OK   " + f.getName());
                 ok++;
             } else {
-                System.out.println("FAIL (exit " + exit + ")");
+                System.out.println("  FAIL " + f.getName() + " (exit " + exit + ")");
+                System.out.print(output);
                 fail++;
             }
-            System.out.println();
         }
         System.out.println("--- Resultados: " + ok + " OK, " + fail + " FAIL de " + (ok + fail) + " ficheros ---");
+        if (fail > 0) {
+            System.exit(1);
+        }
     }
 
     private static void runSingle(String path) throws Exception {

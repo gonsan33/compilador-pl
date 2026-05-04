@@ -1,0 +1,3 @@
+var x : int = 1;
+var p : $int;
+delete p;
