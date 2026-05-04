@@ -71,6 +71,50 @@ public class FunctionNode extends SentenceNode {
         return params;
     }
 
+   @Override
+    public StringBuilder generateCode() {
+        StringBuilder str = new StringBuilder();
+        str.append("(func $" + identifier);
+        if (returnType != null ) {//Si no es void
+            str.append(" (result i32)");
+        }
+        str.append("\n");
+        int tamParams = 0;
+        for (ParameterNode p : params) {//Delta de params
+            tamParams += p.getType().size();
+        }
+        int tamLocales = body.asignarDelta(4 + tamParams); //Delta de las locales que declare
+        int tamTotal = 4 + tamParams + tamLocales;
+        // Metemos la dirección a la que hay que volver
+        str.append("  global.get $SP\n");
+        str.append("  global.get $MP\n");
+        str.append("  i32.store\n");
+        //Mi nuevo MP es el SP
+        str.append("  global.get $SP\n");
+        str.append("  global.set $MP\n");
+        //Le sumo el espacio que necesito para mis variables locales y parámetros
+        str.append("  global.get $SP\n");
+        str.append("  i32.const " + tamTotal + "\n");
+        str.append("  i32.add\n");
+        str.append("  global.set $SP\n");
+        str.append("  global.get $MP\n");
+        str.append("  i32.swap\n");
+        str.append("  i32.store\n");
+        str.append(body.generateCode());
+        //Epilogo, es basicamente el $freeStack de Albert
+        str.append("  global.get $MP\n");
+        str.append("  global.set $SP\n");
+        str.append("  global.get $MP\n");
+        str.append("  i32.load\n");
+        str.append("  global.set $MP\n");
+        if (returnType != null) {//Si es tipo void, no tengo claro si esto es necesario, pero por si acaso, lo dejo
+            str.append("  i32.const 0\n");
+        }
+        str.append("  return\n");
+        str.append(")\n");
+        return str;
+    }
+
     public TypeNode getReturnType() {
         return returnType;
     }
@@ -84,13 +128,7 @@ public class FunctionNode extends SentenceNode {
             returnType.typeCheck();
         if (body != null)
             body.typeCheck();
-        
-    }
 
-    @Override
-    public StringBuilder generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
     }
 
 }
