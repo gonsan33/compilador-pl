@@ -3,6 +3,8 @@ package ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import bind.SymbolTable;
+
 public class ForNode extends ControlSentenceNode {
     protected SentenceNode init;
     protected SentenceNode step;
@@ -33,6 +35,8 @@ public class ForNode extends ControlSentenceNode {
 
     @Override
     public void bind() {
+        SymbolTable st = SymbolTable.getSymbolTable();
+        st.openScope();
         if (init != null)
             init.bind();
         if (boolean_expression != null)
@@ -40,6 +44,7 @@ public class ForNode extends ControlSentenceNode {
         if (step != null)
             step.bind();
         block.bind();
+        st.closeScope();
     }
 
     @Override
