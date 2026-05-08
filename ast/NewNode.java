@@ -23,7 +23,11 @@ public class NewNode implements ASTNode {
 
     @Override
     public StringBuilder generateCode() {
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+        StringBuilder str = new StringBuilder();
+        int size = type.size();
+        str.append("  i32.const ").append(size).append("\n");
+        str.append("  call $reserveHeap\n");
+        return str;
     }
 
     public TypeNode getBaseLineType() {

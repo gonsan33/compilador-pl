@@ -82,6 +82,23 @@ public class ProgramNode extends SentenceNode {
         str.append("  global.set $MP\n");
         str.append(")\n");
 
+        str.append(
+                "(func $reserveHeap (param $size i32) (result i32)\n" +
+                        "  global.get $NP\n" +
+                        "  global.get $NP\n" +
+                        "  local.get $size\n" +
+                        "  i32.add\n" +
+                        "  global.set $NP\n" +
+                        "  global.get $NP\n" +
+                        "  global.get $SP\n" +
+                        "  i32.lt_u\n" +
+                        "  if\n" +
+                        "    i32.const 4\n" +
+                        "    call $exception\n" +
+                        "  end\n" +
+                        "  global.get $NP\n" +
+                        ")\n\n");
+
         str.append("(func $copyn (type $_sig_i32i32i32) ;; copy $n i32 slots from $src to $dest\n");
         str.append("  (param $src i32)\n");
         str.append("  (param $dest i32)\n");
