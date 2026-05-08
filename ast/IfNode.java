@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class IfNode extends ControlSentenceNode {
     protected SentenceNode elseBlock;
 
@@ -13,6 +16,15 @@ public class IfNode extends ControlSentenceNode {
         if (elseBlock != null)
             s += ", else = " + elseBlock;
         return s + ")";
+    }
+
+    public List<ASTNode> hijos() {
+        List<ASTNode> hijos = new ArrayList<>();
+        if (block != null)
+            hijos.add(block);
+        if (elseBlock != null)
+            hijos.add(elseBlock);
+        return hijos;
     }
 
     @Override

@@ -23,7 +23,12 @@ public class PrintNode extends SentenceNode {
 
     @Override
     public StringBuilder generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+        StringBuilder str = new StringBuilder();
+
+        str.append(expression.generateCode());
+
+        str.append("  call $print\n");
+
+        return str;
     }
 }

@@ -1,10 +1,20 @@
 package ast;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import bind.SymbolTable;
 
 public class BlockNode extends SentenceNode {
     protected ArrayList<SentenceNode> instructions;
+
+    public List<ASTNode> hijos() {
+        List<ASTNode> hijos = new ArrayList<>();
+        for (SentenceNode instruction : instructions) {
+            hijos.add(instruction);
+        }
+        return hijos;
+    }
 
     public BlockNode(ArrayList<SentenceNode> instructions) {
         this.instructions = instructions;

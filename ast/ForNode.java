@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ForNode extends ControlSentenceNode {
     protected SentenceNode init;
     protected SentenceNode step;
@@ -13,6 +16,19 @@ public class ForNode extends ControlSentenceNode {
     public String toString() {
         return "For(init = " + init + ", cond = " + boolean_expression + ", step = " + step + ", block = " + block
                 + ")";
+    }
+
+    public List<ASTNode> hijos() {
+        List<ASTNode> hijos = new ArrayList<>();
+        if (init != null)
+            hijos.add(init);
+        if (boolean_expression != null)
+            hijos.add(boolean_expression);
+        if (step != null)
+            hijos.add(step);
+        if (block != null)
+            hijos.add(block);
+        return hijos;
     }
 
     @Override
@@ -43,7 +59,7 @@ public class ForNode extends ControlSentenceNode {
 
     @Override
     public int asignarDelta(int acum) {
-        if (init != null) 
+        if (init != null)
             acum = init.asignarDelta(acum);
         if (block == null)
             return acum;
@@ -53,7 +69,7 @@ public class ForNode extends ControlSentenceNode {
     @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
-        str.append(init.generateCode());    
+        str.append(init.generateCode());
         str.append("block\n");
         str.append("loop\n");
         str.append(boolean_expression.generateCode());
@@ -64,6 +80,6 @@ public class ForNode extends ControlSentenceNode {
         str.append("br 0 \n");
         str.append("end \n");
         str.append("end \n");
-        return str; 
+        return str;
     }
 }

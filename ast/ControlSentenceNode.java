@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import errors.GestionErroresTiny;
 
 public abstract class ControlSentenceNode extends SentenceNode {
@@ -13,6 +16,13 @@ public abstract class ControlSentenceNode extends SentenceNode {
 
     public String toString() {
         return "ControlSentence(cond = " + boolean_expression + ", block = " + block + ")";
+    }
+
+    public List<ASTNode> hijos() {
+        List<ASTNode> hijos = new ArrayList<>();
+        if (block != null)
+            hijos.add(block);
+        return hijos;
     }
 
     @Override
@@ -39,10 +49,10 @@ public abstract class ControlSentenceNode extends SentenceNode {
 
     @Override
     public int asignarDelta(int acum) {
-        if (block == null) 
+        if (block == null)
             return acum;
         return block.asignarDelta(acum);
     }
 
-    public abstract  StringBuilder generateCode(); 
+    public abstract StringBuilder generateCode();
 }

@@ -1,9 +1,9 @@
 package ast;
 
 public class ScanNode extends SentenceNode {
-    protected ExpressionNode designator;
+    protected DesignatorNode designator;
 
-    public ScanNode(ExpressionNode designator) {
+    public ScanNode(DesignatorNode designator) {
         this.designator = designator;
     }
 
@@ -28,7 +28,13 @@ public class ScanNode extends SentenceNode {
 
     @Override
     public StringBuilder generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+        StringBuilder str = new StringBuilder();
+        str.append("  call $read\n");
+        str.append("  local.get $localsStart\n");
+        str.append("  i32.const " + designator.getDelta() + "\n");
+        str.append("  i32.add\n");
+        str.append("  i32.swap\n");
+        str.append("  i32.store\n");
+        return str;
     }
 }

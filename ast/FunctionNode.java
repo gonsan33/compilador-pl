@@ -2,6 +2,8 @@ package ast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
 
@@ -79,42 +81,30 @@ public class FunctionNode extends SentenceNode {
             str.append(" (result i32)");
         }
         str.append("\n");
-        int tamParams = 0;
-        for (ParameterNode p : params) {// Delta de params
-            p.setDelta(4 + tamParams);
-            tamParams += p.getType().size();
-        }
-        int tamTotal = 4 + tamParams;
+        str.append("  (local $localsStart i32)\n");
+        str.append("  (local $temp i32)\n");
+        Integer c = 0;
+        Integer max = 0;
+        maxSize((ASTNode) this, c, max);
+        int tamTotal = max;
         if (body != null)
             tamTotal = body.asignarDelta(tamTotal); // Delta de las locales que declare
-        // Metemos la dirección a la que hay que volver
-        str.append("  global.get $SP\n");
-        str.append("  global.get $MP\n");
-        str.append("  i32.store\n");
-        // Mi nuevo MP es el SP
-        str.append("  global.get $SP\n");
-        str.append("  global.set $MP\n");
-        // Le sumo el espacio que necesito para mis variables locales y parámetros
-        str.append("  global.get $SP\n");
         str.append("  i32.const " + tamTotal + "\n");
-        str.append("  i32.add\n");
-        str.append("  global.set $SP\n");
+        str.append("  call $reserveStack\n");
+        str.append("  local.set $temp\n");
+        str.append("  global.get $MP\n");
+        str.append("  local.get $temp\n");
+        str.append("  i32.store\n");
         str.append("  global.get $MP\n");
         str.append("  i32.const 4\n");
         str.append("  i32.add\n");
         str.append("  local.set $localsStart\n");
         str.append(body.generateCode());
-        // Epilogo, es basicamente el $freeStack de Albert
-        str.append("  global.get $MP\n");
-        str.append("  global.set $SP\n");
-        str.append("  global.get $MP\n");
-        str.append("  i32.load\n");
-        str.append("  global.set $MP\n");
         if (returnType != null) {// Si es tipo void, no tengo claro si esto es necesario, pero por si acaso, lo
                                  // dejo
             str.append("  i32.const 0\n");
         }
-        str.append("  return\n");
+        str.append("  call $freeStack\n");
         str.append(")\n");
         return str;
     }
@@ -134,6 +124,33 @@ public class FunctionNode extends SentenceNode {
         if (body != null)
             body.typeCheck();
 
+    }
+
+    public List<ASTNode> hijos() {
+        List<ASTNode> hijos = new ArrayList<>();
+        for (ParameterNode param : params)
+            hijos.add(param);
+        if (body != null)
+            hijos.add(body);
+        return hijos;
+    }
+
+    public void maxSize(ASTNode a, Integer c, Integer max) {
+        if (a instanceof VariableDeclarationNode) {
+            c += ((VariableDeclarationNode) a).getType().size();
+            if (c > max)
+                max = c;
+        } else if (a instanceof BlockNode) {
+            Integer c1 = c;
+            for (SentenceNode n : ((BlockNode) a).instructions) {
+                maxSize(n, c, max);
+            }
+            c = c1;
+        } else {
+            for (ASTNode n : a.hijos()) {
+                maxSize(n, c, max);
+            }
+        }
     }
 
 }
