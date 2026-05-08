@@ -31,5 +31,11 @@ public abstract class ControlSentenceNode extends SentenceNode {
             new GestionErroresTiny().errorTipos("La expresión debe ser booleana");
     }
 
+    public void setFunction(FunctionNode function) {
+        if (block != null) {
+            block.setFunction(function);
+        }
+    }
+
     public abstract  StringBuilder generateCode(); 
 }

@@ -30,7 +30,13 @@ public class ForNode extends ControlSentenceNode {
     public void typeCheck() {
         if (init != null)
             init.typeCheck();
-        super.typeCheck();
+        if (boolean_expression != null) {
+            boolean_expression.typeCheck();
+            if (!boolean_expression.getType().equals(new BoolTypeNode())) {
+                new errors.GestionErroresTiny().errorTipos("La expresión debe ser booleana");
+            }
+        }
+        block.typeCheck();
         if (step != null)
             step.typeCheck();
     }

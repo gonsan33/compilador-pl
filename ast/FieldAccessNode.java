@@ -26,9 +26,21 @@ public class FieldAccessNode extends DesignatorNode{
     @Override
     public void typeCheck() {
         designator.typeCheck();
-        StructTypeNode type = (StructTypeNode) designator.getType();  
+        TypeNode designatorType = designator.getType();
+        if (designatorType instanceof CustomTypeNode) {
+            designatorType = ((CustomTypeNode) designatorType).getDeclaredType();
+        }
+        if (!(designatorType instanceof StructTypeNode)) {
+            new GestionErroresTiny().errorTipos("El designador no es un struct");
+            return;
+        }
+        StructTypeNode type = (StructTypeNode) designatorType;  
         this.param = type.getField(this.field); 
-        if(param == null) new GestionErroresTiny().errorTipos("El struct no tiene un campo llamado " + this.field);
+        if(param == null) {
+            new GestionErroresTiny().errorTipos("El struct no tiene un campo llamado " + this.field);
+            this.type = new IntTypeNode();
+            return;
+        }
         this.type = param.getType(); 
     }
 

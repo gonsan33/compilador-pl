@@ -31,10 +31,22 @@ public class IfNode extends ControlSentenceNode {
     }
 
     @Override
+    public void setFunction(FunctionNode function) {
+        super.setFunction(function);
+        if (elseBlock instanceof ReturnNode) {
+            ((ReturnNode) elseBlock).setFunction(function);
+        } else if (elseBlock instanceof BlockNode) {
+            ((BlockNode) elseBlock).setFunction(function);
+        } else if (elseBlock instanceof ControlSentenceNode) {
+            ((ControlSentenceNode) elseBlock).setFunction(function);
+        }
+    }
+
+    @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
         str.append(this.boolean_expression.generateCode());
-        str.append("if"); 
+        str.append("if");
         str.append(this.block.generateCode());
         if (elseBlock != null) {
             str.append("else \n");

@@ -1,0 +1,8 @@
+fn id(x : int) : int;
+
+fn id(x : int) : int {
+    return x;
+}
+
+var y : int = id(1);
+

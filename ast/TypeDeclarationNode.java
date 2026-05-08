@@ -25,6 +25,10 @@ public class TypeDeclarationNode extends SentenceNode {
         return type.size();
     }
 
+    public TypeNode getType() {
+        return type;
+    }
+
     @Override
     public void typeCheck() {
         type.typeCheck();

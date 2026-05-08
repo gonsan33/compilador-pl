@@ -53,6 +53,8 @@ public class BlockNode extends SentenceNode {
                 ((ReturnNode) node).setFunction(function);
             } else if (node instanceof BlockNode) {
                 ((BlockNode) node).setFunction(function);
+            } else if (node instanceof ControlSentenceNode) {
+                ((ControlSentenceNode) node).setFunction(function);
             }
         }
     }

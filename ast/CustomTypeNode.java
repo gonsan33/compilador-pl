@@ -28,6 +28,10 @@ public class CustomTypeNode extends TypeNode {
 
     }
 
+    public TypeNode getDeclaredType() {
+        return declaration.getType();
+    }
+
     @Override
     public boolean equals(TypeNode other) {
         return this.identifier.equals(other.typeName());

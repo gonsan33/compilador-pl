@@ -27,6 +27,40 @@ if ! javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.
     exit 1
 fi
 
+echo "Testear Léxico"
+LEX_DIR="tests/tests_lexico"
+lex_ok=0
+lex_fail=0
+if [ -d "$LEX_DIR" ]; then
+    for f in "$LEX_DIR"/*.in; do
+        [ -f "$f" ] || continue
+        output=$(java -cp "$CP" alex.Main "$f" 2>&1)
+        exit_code=$?
+        case "$(basename "$f")" in
+            *"_err"*|*"invalid"*) expects_error=1 ;;
+            *) expects_error=0 ;;
+        esac
+        if printf '%s\n' "$output" | grep -Eq "ERROR|Caracter inesperado"; then
+            has_error=1
+        else
+            has_error=0
+        fi
+        if [ $exit_code -eq 0 ] && [ $expects_error -eq $has_error ]; then
+            echo "  OK   $f"
+            lex_ok=$((lex_ok + 1))
+        else
+            echo "  FAIL $f (exit $exit_code, expected lexical error: $expects_error, found lexical error: $has_error)"
+            printf '%s\n' "$output"
+            lex_fail=$((lex_fail + 1))
+        fi
+    done
+fi
+echo "--- Resultados léxico: $lex_ok OK, $lex_fail FAIL de $((lex_ok + lex_fail)) ficheros ---"
+if [ $lex_fail -gt 0 ]; then
+    exit 1
+fi
+
+echo ""
 echo "Testear AST"
 java -cp "$CP" tests.tests_ast.ASTTest
 echo ""
@@ -41,11 +75,20 @@ if [ -d "$BIND_DIR" ]; then
         [ -f "$f" ] || continue
         output=$(java -cp "$CP" Main "$f" 2>&1)
         exit_code=$?
-        if [ $exit_code -eq 0 ]; then
+        case "$(basename "$f")" in
+            *"_err"*|*"undeclared"*|*"no_visible"*) expects_error=1 ;;
+            *) expects_error=0 ;;
+        esac
+        if printf '%s\n' "$output" | grep -q "ERROR BINDING"; then
+            has_error=1
+        else
+            has_error=0
+        fi
+        if [ $exit_code -eq 0 ] && [ $expects_error -eq $has_error ]; then
             echo "  OK   $f"
             bind_ok=$((bind_ok + 1))
         else
-            echo "  FAIL $f (exit $exit_code)"
+            echo "  FAIL $f (exit $exit_code, expected binding error: $expects_error, found binding error: $has_error)"
             printf '%s\n' "$output"
             bind_fail=$((bind_fail + 1))
         fi

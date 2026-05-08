@@ -31,12 +31,26 @@ public class ArrayAccessNode extends DesignatorNode {
         if (!(designator instanceof DesignatorNode)) {
             new GestionErroresTiny().errorTipos("El designador debe ser un designador");
         }
-        this.type = designator.getType();
+        TypeNode designatorType = designator.getType();
+        if (designatorType instanceof ArrayTypeNode) {
+            this.type = ((ArrayTypeNode) designatorType).getElementType();
+        } else {
+            new GestionErroresTiny().errorTipos("El designador debe ser un array");
+            this.type = designatorType;
+        }
     }
 
     @Override
     public TypeNode getType() {
-        return designator.getType(); 
+        if (type == null) {
+            TypeNode designatorType = designator.getType();
+            if (designatorType instanceof ArrayTypeNode) {
+                type = ((ArrayTypeNode) designatorType).getElementType();
+            } else {
+                type = designatorType;
+            }
+        }
+        return type; 
     }
 
 
