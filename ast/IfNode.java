@@ -43,6 +43,16 @@ public class IfNode extends ControlSentenceNode {
     }
 
     @Override
+    public int asignarDelta(int acum) {
+        int thenEnd = block != null ? block.asignarDelta(acum) : acum;
+        int elseEnd = acum;
+        if (elseBlock != null) {
+            elseEnd = elseBlock.asignarDelta(acum);
+        }
+        return Math.max(thenEnd, elseEnd);
+    }
+
+    @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
         str.append(this.boolean_expression.generateCode());

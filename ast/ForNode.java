@@ -42,6 +42,15 @@ public class ForNode extends ControlSentenceNode {
     }
 
     @Override
+    public int asignarDelta(int acum) {
+        if (init != null) 
+            acum = init.asignarDelta(acum);
+        if (block == null)
+            return acum;
+        return block.asignarDelta(acum);
+    }
+
+    @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
         str.append(init.generateCode());    

@@ -60,7 +60,6 @@ public class BlockNode extends SentenceNode {
     }
 
     public int asignarDelta(int acum) {
-        acum=0;
         for (SentenceNode node : this.instructions) {
             acum = node.asignarDelta(acum);
         }

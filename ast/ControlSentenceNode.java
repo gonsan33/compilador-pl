@@ -37,5 +37,12 @@ public abstract class ControlSentenceNode extends SentenceNode {
         }
     }
 
+    @Override
+    public int asignarDelta(int acum) {
+        if (block == null) 
+            return acum;
+        return block.asignarDelta(acum);
+    }
+
     public abstract  StringBuilder generateCode(); 
 }

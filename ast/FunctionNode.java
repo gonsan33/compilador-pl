@@ -71,7 +71,7 @@ public class FunctionNode extends SentenceNode {
         return params;
     }
 
-   @Override
+    @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
         str.append("(func $" + identifier);
@@ -81,10 +81,12 @@ public class FunctionNode extends SentenceNode {
         str.append("\n");
         int tamParams = 0;
         for (ParameterNode p : params) {//Delta de params
+            p.setDelta(4 + tamParams);
             tamParams += p.getType().size();
         }
-        int tamLocales = body.asignarDelta(4 + tamParams); //Delta de las locales que declare
-        int tamTotal = 4 + tamParams + tamLocales;
+        int tamTotal = 4 + tamParams;
+        if (body != null)
+            tamTotal = body.asignarDelta(tamTotal); //Delta de las locales que declare
         // Metemos la dirección a la que hay que volver
         str.append("  global.get $SP\n");
         str.append("  global.get $MP\n");
@@ -121,7 +123,8 @@ public class FunctionNode extends SentenceNode {
 
     @Override
     public void typeCheck() {
-        this.body.setFunction(this);
+        if (body != null)
+            this.body.setFunction(this);
         for (ParameterNode param : params)
             param.typeCheck();
         if (returnType != null)
