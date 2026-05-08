@@ -1,5 +1,9 @@
 package ast;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import bind.SymbolTable;
 
@@ -136,6 +140,15 @@ public class ProgramNode extends SentenceNode {
         str.append(")\n");
 
         return str;
+    }
+
+    public void writeWatFile(String filename) {
+        StringBuilder code = this.generateCode();
+        try {
+            Files.write(Paths.get(filename), code.toString().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            System.err.println("Error writing .wat file: " + e.getMessage());
+        }
     }
 
 }

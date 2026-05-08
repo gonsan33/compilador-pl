@@ -20,17 +20,19 @@ fn swap(a : int, b : int) {
 
 fn main() : {
   x = factorial(5);
+  print(x); 
   while (x > 0) {
     x = x - 1;
+    print(x);
+
   }
 
   for (;x < 10;) {
     x = x + 1;
+    print(x);
+
   }
 
-  print(x);
-  scan(x);
-  delete p;
 }
 
 
