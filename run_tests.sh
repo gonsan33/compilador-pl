@@ -1,9 +1,6 @@
 #!/bin/bash
-
 CP_SEP=":"
-case "$(uname -s)" in
-    CYGWIN*|MINGW*|MSYS*) CP_SEP=";" ;;
-esac
+case "$(uname -s)" in CYGWIN*|MINGW*|MSYS*) CP_SEP=";" ;;esac
 CP=".${CP_SEP}cup.jar"
 
 generate_sources() {

@@ -140,8 +140,8 @@ INSTR_CONTROL ::= INSTR_WHILE:w {: RESULT = w; :} | INSTR_FOR:f {: RESULT = f; :
 
 INSTR_WHILE ::= WHILE PAP EXPRESION:e PCIERRE BLOQUE:b {: RESULT = new WhileNode(e, b); :};
 EXPRESION_OPT ::= EXPRESION:e {: RESULT = e; :} | {: RESULT = null; :};
-DECL_VAR_OPT ::= DECL_VARIABLE:d PUNTOCOMA {: RESULT = d; :} | {: RESULT = null; :};
-ASIGNACION_OPT ::= ASIGNACION:a PUNTOCOMA {: RESULT = a; :} | {: RESULT = null; :};
+DECL_VAR_OPT ::= DECL_VARIABLE:d {: RESULT = d; :} | {: RESULT = null; :};
+ASIGNACION_OPT ::= DESIGNADOR:d ASIGN EXPRESION:e {: RESULT = new AssignNode(d, e); :} | {: RESULT = null; :};
 INSTR_FOR ::= FOR PAP DECL_VAR_OPT:init PUNTOCOMA EXPRESION_OPT:cond PUNTOCOMA ASIGNACION_OPT:step PCIERRE BLOQUE:b {: RESULT = new ForNode(init, cond, step, b); :};
 INSTR_IF ::= IF PAP EXPRESION:e PCIERRE BLOQUE:b ELSE BLOQUE:elseB {: RESULT = new IfNode(e, b, elseB); :} | IF PAP EXPRESION:e PCIERRE BLOQUE:b  {: RESULT = new IfNode(e, b, null); :};
 RAMA_ELSE ::= ELSE BLOQUE:b {: RESULT = b; :} | {: RESULT = null; :};
