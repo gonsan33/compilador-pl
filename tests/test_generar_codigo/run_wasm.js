@@ -7,11 +7,7 @@ if (!wasmPath) {
   process.exit(1);
 }
 
-const input = readFileSync(0, "utf8")
-  .trim()
-  .split(/\s+/)
-  .filter(Boolean)
-  .map(Number);
+const input = readFileSync(0, "utf8").trim().split(/\s+/).filter(Boolean).map(Number);
 
 let inputIndex = 0;
 
