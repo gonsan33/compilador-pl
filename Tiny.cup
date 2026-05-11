@@ -30,7 +30,7 @@ terminal     MAS, MENOS, POR, DIV, PAP, PCIERRE, CAP, CCIERRE, LLAP, LLCIERRE,
              NEW, DELETE, BOOL, INT, TYPEDEF, STRUCT, TRUE, FALSE, PRINT, SCAN, PUNTO;
 
 
-non terminal ExpressionNode EXPRESION, E0, E1, E2, E3, LLAMADA_FUNCION, EXPRESION_OPT;
+non terminal ExpressionNode EXPRESION, E0, E1, E2, E2B,E3, LLAMADA_FUNCION, EXPRESION_OPT;
 non terminal DesignatorNode DESIGNADOR, D1, D2, D3;
 non terminal TypeNode TIPO_DE_VARIABLE, T1, T2;
 non terminal ProgramNode PROGRAMA;
@@ -100,7 +100,7 @@ E2 ::=AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAN
 | MENOS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MENOS, e); :} 
 | NOT E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.NOT, e); :} 
 | E3:e {: RESULT = e; :};
-E3 ::= DESIGNADOR:d {: RESULT = d; :} | LLAMADA_FUNCION:f {: RESULT = f; :} | ENT:e {: RESULT = new IntNode(e.lexema);:} | TRUE {: RESULT = new BooleanNode(true); :} | FALSE {: RESULT = new BooleanNode(false); :} | PAP EXPRESION:e PCIERRE {: RESULT = e; :};
+E3 ::= DESIGNADOR:d {: RESULT = d; :} |ENT:e {: RESULT = new IntNode(e.lexema);:} | TRUE {: RESULT = new BooleanNode(true); :} | FALSE {: RESULT = new BooleanNode(false); :} | PAP EXPRESION:e PCIERRE {: RESULT = e; :};
 
 
 TIPO_DE_VARIABLE ::= CAP ENT:s CCIERRE TIPO_DE_VARIABLE:t {: RESULT = new ArrayTypeNode(s.lexema, t); :} | T1:t {: RESULT = t; :};
@@ -119,16 +119,20 @@ TFUN ::= DOSPUNTOS TIPO_DE_VARIABLE:t {: RESULT = t; :} | {: RESULT = null; :};
 FUNCION ::= FUNDEF IDEN:id PAP LISTA_DECLARACIONES:l PCIERRE TFUN:t BLOQUE:b {: RESULT = new FunctionNode(id.lexema, l, t, b); :};
 BLOQUE ::= LLAP LISTA_INSTRUCCIONES_BLOQUE:l LLCIERRE {: RESULT = new BlockNode(l); :};
 
-DESIGNADOR ::= DESIGNADOR:d CAP EXPRESION:e CCIERRE {: RESULT = new ArrayAccessNode(d, e); :} | D1:d {: RESULT = d; :};
-D1 ::= D1:d PUNTO D2:f {: RESULT = new FieldAccessNode(d, f.toString()); :} | D2:d {: RESULT = d; :};
-D2 ::= IDEN:id {: RESULT = new IdentifierNode(id.lexema); :} | D3:d {: RESULT = d; :};
-D3 ::= DOLAR D3:d {: RESULT = new PointerAccessNode(d); :} | PAP DESIGNADOR:d PCIERRE {: RESULT = d; :};
 
 LLAMADA_FUNCION ::= IDEN:id PAP LISTA_ARGUMENTOS:l PCIERRE {: RESULT = new FunctionCallNode(id.lexema, l); :};
 LISTA_ARGUMENTOS ::= EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e); RESULT = r; :}
  | {: RESULT = new ArrayList<ExpressionNode>(); :};
 LISTA_ARGUMENTOS_REST ::= COMA EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e); RESULT = r; :}
  | {: RESULT = new ArrayList<ExpressionNode>(); :};
+
+
+
+
+DESIGNADOR ::= DESIGNADOR:d CAP EXPRESION:e CCIERRE {: RESULT = new ArrayAccessNode(d, e); :} | D1:d {: RESULT = d; :};
+D1 ::= D1:d PUNTO D2:f {: RESULT = new FieldAccessNode(d, f.toString()); :} | D2:d {: RESULT = d; :};
+D2 ::= IDEN:id {: RESULT = new IdentifierNode(id.lexema); :} |IDEN:id PAP LISTA_ARGUMENTOS:l PCIERRE {: RESULT = new FunctionCallNode(id.lexema, l); :} |D3:d {: RESULT = d; :};
+D3 ::= DOLAR D3:d {: RESULT = new PointerAccessNode(d); :}; 
 
 INSTR_CONTROL ::= INSTR_WHILE:w {: RESULT = w; :} | INSTR_FOR:f {: RESULT = f; :} | INSTR_IF:i {: RESULT = i; :} | INSTR_RETURN:r {: RESULT = r; :};
 
@@ -138,7 +142,7 @@ DECL_VAR_OPT ::= DECL_VARIABLE:d PUNTOCOMA {: RESULT = d; :} | {: RESULT = null;
 ASIGNACION_OPT ::= ASIGNACION:a PUNTOCOMA {: RESULT = a; :} | {: RESULT = null; :};
 INSTR_FOR ::= FOR PAP DECL_VAR_OPT:init PUNTOCOMA EXPRESION_OPT:cond PUNTOCOMA ASIGNACION_OPT:step PCIERRE BLOQUE:b {: RESULT = new ForNode(init, cond, step, b); :};
 INSTR_IF ::= IF PAP EXPRESION:e PCIERRE BLOQUE:b ELSE BLOQUE:elseB {: RESULT = new IfNode(e, b, elseB); :} | IF PAP EXPRESION:e PCIERRE BLOQUE:b  {: RESULT = new IfNode(e, b, null); :};
-RAMA_ELSE ::= ELSE BLOQUE:b {: RESULT = new IfNode(e, b, r); :} | ELSE BLOQUE:b {: RESULT = b; :} | {: RESULT = null; :};
+RAMA_ELSE ::= ELSE BLOQUE:b {: RESULT = b; :} | {: RESULT = null; :};
 INSTR_RETURN ::= RETURN EXPRESION:e PUNTOCOMA {: RESULT = new ReturnNode(e); :};
 
 

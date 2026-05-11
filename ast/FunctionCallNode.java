@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
 
-public class FunctionCallNode extends ExpressionNode {
+public class FunctionCallNode extends DesignatorNode {
     protected String identifier;
     protected ArrayList<ExpressionNode> args;
     protected FunctionNode declaration;
@@ -96,6 +96,12 @@ public class FunctionCallNode extends ExpressionNode {
             str.append("i32.const " + (param.getType().size() / 4) + "\n"); 
             str.append("call $copyn\n"); 
         }
+    }
+
+    @Override
+    public StringBuilder generateCodeL() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'generateCodeL'");
     }
         
 }
