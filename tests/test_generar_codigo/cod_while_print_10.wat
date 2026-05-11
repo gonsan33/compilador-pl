@@ -48,7 +48,6 @@
     i32.const 4
     call $exception
   end
-  global.get $NP
 )
 
 (func $copyn (type $_sig_i32i32i32) ;; copy $n i32 slots from $src to $dest
@@ -83,7 +82,7 @@
 (func $main
   (local $localsStart i32)
   (local $temp i32)
-  i32.const 4
+  i32.const 8
   call $reserveStack
   local.set $temp
   global.get $MP
@@ -93,35 +92,45 @@
   i32.const 4
   i32.add
   local.set $localsStart
+i32.const 4
+local.get $localsStart
+i32.add
+i32.const 0
+i32.store
 i32.const 0
 local.get $localsStart
 i32.add
-i32.const 5
-i32.store
+  call $read
+  i32.store
 block
 loop
-i32.const 0
+i32.const 4
 local.get $localsStart
 i32.add
 i32.load
-i32.const 0
-i32.gt_s
+i32.const 10
+i32.lt_s
 i32.eqz
 br_if 1 
 i32.const 0
 local.get $localsStart
 i32.add
 i32.load
-  call $print
-i32.const 0
+i32.const 4
 local.get $localsStart
 i32.add
-i32.const 0
+i32.load
+i32.add
+  call $print
+i32.const 4
+local.get $localsStart
+i32.add
+i32.const 4
 local.get $localsStart
 i32.add
 i32.load
 i32.const 1
-i32.sub
+i32.add
 i32.store
 br 0 
 end 
