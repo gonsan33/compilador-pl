@@ -18,7 +18,7 @@ fn swap(a : int, b : int) {
   b = tmp;
 }
 
-fn main() : {
+fn main() {
   x = factorial(5);
   print(x); 
   while (x > 0) {

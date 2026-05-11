@@ -5,7 +5,7 @@ fn factorial(n : int) : int {
         return n * factorial(n - 1);
     }
 }
-fn main() : {
+fn main() {
     var result : int = factorial(5);
     print(result); 
 

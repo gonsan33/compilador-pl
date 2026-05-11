@@ -83,10 +83,11 @@ public class FunctionNode extends SentenceNode {
         str.append("\n");
         str.append("  (local $localsStart i32)\n");
         str.append("  (local $temp i32)\n");
-        Integer c = 0;
-        Integer max = 0;
-        maxSize((ASTNode) this, c, max);
-        int tamTotal = max;
+        int tamTotal = 0;
+        for (ParameterNode param : params) {
+            param.setDelta(tamTotal);
+            tamTotal += param.esPorReferencia() ? 4 : param.getType().size();
+        }
         if (body != null)
             tamTotal = body.asignarDelta(tamTotal); // Delta de las locales que declare
         str.append("  i32.const " + tamTotal + "\n");

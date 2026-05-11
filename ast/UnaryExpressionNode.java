@@ -33,6 +33,10 @@ public class UnaryExpressionNode extends ExpressionNode {
             if (!exp.getType().equals(new BoolTypeNode())) {
                 new errors.GestionErroresTiny().errorTipos("El operador ! solo se puede aplicar a booleanos");
             }
+        } else if (op == UnaryOperation.DOLAR) {
+            if (!(exp.getType() instanceof PointerTypeNode)) {
+                new errors.GestionErroresTiny().errorTipos("El operador $ solo se puede aplicar a punteros");
+            }
         }
     }
 
@@ -55,6 +59,10 @@ public class UnaryExpressionNode extends ExpressionNode {
                 code.append(exp.generateCode());
                 code.append("i32.eqz\n");
                 break;
+            case DOLAR:
+                code.append(exp.generateCode());
+                code.append("i32.load\n");
+                break;
         }
         return code;
     }
@@ -67,6 +75,12 @@ public class UnaryExpressionNode extends ExpressionNode {
             return new IntTypeNode();
         } else if (op == UnaryOperation.NOT) {
             return new BoolTypeNode();
+        } else if (op == UnaryOperation.DOLAR) {
+            TypeNode expType = exp.getType();
+            if (expType instanceof PointerTypeNode) {
+                return ((PointerTypeNode) expType).getBaseType();
+            }
+            return new IntTypeNode(); // Fallback para error recovery
         }
         return null;
     }

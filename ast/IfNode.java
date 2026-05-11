@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IfNode extends ControlSentenceNode {
-    protected SentenceNode elseBlock;
+    protected BlockNode elseBlock;
 
-    public IfNode(ExpressionNode boolean_expression, BlockNode block, SentenceNode elseBlock) {
+    public IfNode(ExpressionNode boolean_expression, BlockNode block, BlockNode elseBlock) {
         super(boolean_expression, block);
         this.elseBlock = elseBlock;
     }
@@ -45,13 +45,8 @@ public class IfNode extends ControlSentenceNode {
     @Override
     public void setFunction(FunctionNode function) {
         super.setFunction(function);
-        if (elseBlock instanceof ReturnNode) {
-            ((ReturnNode) elseBlock).setFunction(function);
-        } else if (elseBlock instanceof BlockNode) {
-            ((BlockNode) elseBlock).setFunction(function);
-        } else if (elseBlock instanceof ControlSentenceNode) {
-            ((ControlSentenceNode) elseBlock).setFunction(function);
-        }
+        elseBlock.setFunction(function);
+        
     }
 
     @Override

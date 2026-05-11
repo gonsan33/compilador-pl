@@ -36,6 +36,7 @@ public class ReturnNode extends SentenceNode {
     public StringBuilder generateCode() {
         StringBuilder code = new StringBuilder();
         code.append(this.expression.generateCode()); 
+        code.append("call $freeStack\n");
         code.append("return\n"); 
         return code;
     }

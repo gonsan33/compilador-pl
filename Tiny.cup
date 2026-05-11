@@ -95,8 +95,7 @@ E0 ::= E0:l MAS E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.SUM, l
 E1 ::= E1:l POR E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MULTIPLICATION, l, r); :} | E1:l DIV E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.DIVISION, l, r); :} | E1:l AND E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.AND, l, r); :} | 
 E1:l MOD E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MODULE, l, r); :} | 
 E2:res {: RESULT = res; :};
-E2 ::= DOLAR E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.DOLAR, e); :} 
-| AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAND, e); :} 
+E2 ::=AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAND, e); :} 
 | MAS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MAS, e); :} 
 | MENOS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MENOS, e); :} 
 | NOT E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.NOT, e); :} 
@@ -123,7 +122,7 @@ BLOQUE ::= LLAP LISTA_INSTRUCCIONES_BLOQUE:l LLCIERRE {: RESULT = new BlockNode(
 DESIGNADOR ::= DESIGNADOR:d CAP EXPRESION:e CCIERRE {: RESULT = new ArrayAccessNode(d, e); :} | D1:d {: RESULT = d; :};
 D1 ::= D1:d PUNTO D2:f {: RESULT = new FieldAccessNode(d, f.toString()); :} | D2:d {: RESULT = d; :};
 D2 ::= IDEN:id {: RESULT = new IdentifierNode(id.lexema); :} | D3:d {: RESULT = d; :};
-D3 ::= DOLAR DESIGNADOR:d {: RESULT = new PointerAccessNode(d); :} | PAP DESIGNADOR:d PCIERRE {: RESULT = d; :};
+D3 ::= DOLAR D3:d {: RESULT = new PointerAccessNode(d); :} | PAP DESIGNADOR:d PCIERRE {: RESULT = d; :};
 
 LLAMADA_FUNCION ::= IDEN:id PAP LISTA_ARGUMENTOS:l PCIERRE {: RESULT = new FunctionCallNode(id.lexema, l); :};
 LISTA_ARGUMENTOS ::= EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e); RESULT = r; :}
@@ -138,8 +137,8 @@ EXPRESION_OPT ::= EXPRESION:e {: RESULT = e; :} | {: RESULT = null; :};
 DECL_VAR_OPT ::= DECL_VARIABLE:d PUNTOCOMA {: RESULT = d; :} | {: RESULT = null; :};
 ASIGNACION_OPT ::= ASIGNACION:a PUNTOCOMA {: RESULT = a; :} | {: RESULT = null; :};
 INSTR_FOR ::= FOR PAP DECL_VAR_OPT:init PUNTOCOMA EXPRESION_OPT:cond PUNTOCOMA ASIGNACION_OPT:step PCIERRE BLOQUE:b {: RESULT = new ForNode(init, cond, step, b); :};
-INSTR_IF ::= IF PAP EXPRESION:e PCIERRE BLOQUE:b RAMA_ELSE:r {: RESULT = new IfNode(e, b, r); :};
-RAMA_ELSE ::= ELSE IF PAP EXPRESION:e PCIERRE BLOQUE:b RAMA_ELSE:r {: RESULT = new IfNode(e, b, r); :} | ELSE BLOQUE:b {: RESULT = b; :} | {: RESULT = null; :};
+INSTR_IF ::= IF PAP EXPRESION:e PCIERRE BLOQUE:b ELSE BLOQUE:elseB {: RESULT = new IfNode(e, b, elseB); :} | IF PAP EXPRESION:e PCIERRE BLOQUE:b  {: RESULT = new IfNode(e, b, null); :};
+RAMA_ELSE ::= ELSE BLOQUE:b {: RESULT = new IfNode(e, b, r); :} | ELSE BLOQUE:b {: RESULT = b; :} | {: RESULT = null; :};
 INSTR_RETURN ::= RETURN EXPRESION:e PUNTOCOMA {: RESULT = new ReturnNode(e); :};
 
 

@@ -40,21 +40,62 @@ public class FunctionCallNode extends ExpressionNode {
                     .errorTipos("La lista de argumentos de la declaración no tiene el mismo tamaño que args");
         }
         for (int i = 0; i < args.size(); ++i) {
-            if (!args.get(i).getType().equals(declaration.getParams().get(i).getType())
-                    || !(args.get(i) instanceof DesignatorNode || !declaration.getParams().get(i).esPorReferencia())) {
+            ParameterNode param = declaration.getParams().get(i);
+            ExpressionNode arg = args.get(i);
+            if (!arg.getType().equals(param.getType())) {
                 new GestionErroresTiny().errorTipos("El parámetro" + i + " no coincide con la declaracion");
+            }
+            if (param.esPorReferencia() && !(arg instanceof DesignatorNode)) {
+                new GestionErroresTiny().errorTipos("El parámetro " + i + " debe pasarse por referencia");
+            }
+            if (!param.esPorReferencia() && param.getType().size() > 4 && !(arg instanceof DesignatorNode)) {
+                new GestionErroresTiny().errorTipos("El parámetro compuesto " + i + " debe ser un designador");
             }
         }
     }
 
     @Override
     public StringBuilder generateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateCode'");
+        StringBuilder str = new StringBuilder(); 
+        for (int i = 0; i < args.size(); ++i) {
+            generarCodigoArgumento(args.get(i), i, str);
+        }
+        str.append("call $" + identifier + "\n"); // REVISAR ESTO !!!!!!!!!!
+        return str;
     }
 
     @Override
     public TypeNode getType() {
         return declaration.getReturnType();
     }
+
+    private void generarCodigoArgumento(ExpressionNode arg, int index, StringBuilder str) {
+        ParameterNode param = declaration.getParams().get(index); 
+        // Parámetro por valor escalar (1 slot)
+        if(!param.esPorReferencia() && param.getType().size() == 4 ) {
+            str.append("global.get $SP\n"); 
+            str.append("i32.const " + param.getDelta() + "\n");
+            str.append("i32.add\n");
+            str.append(arg.generateCode());
+            str.append("i32.store offset=4\n");
+        }
+        //parámetro por referencia 
+        else if(param.esPorReferencia()) {
+            str.append("global.get $SP\n"); 
+            str.append("i32.const " + param.getDelta() + "\n");
+            str.append("i32.add\n");
+            str.append(((DesignatorNode) arg).generateCodeL());
+            str.append("i32.store offset=4\n");
+        }
+
+        else { //parámetro por valor complicado 
+            str.append(((DesignatorNode) arg).generateCodeL());
+            str.append("global.get $SP\n"); 
+            str.append("i32.const " + (param.getDelta()+4) + "\n");
+            str.append("i32.add\n");
+            str.append("i32.const " + (param.getType().size() / 4) + "\n"); 
+            str.append("call $copyn\n"); 
+        }
+    }
+        
 }
