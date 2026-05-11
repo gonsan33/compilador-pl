@@ -40,4 +40,10 @@ public class PointerTypeNode extends TypeNode {
     public String typeName() {
         return "Pointer(" + baseType.typeName() + ")";
     }
+
+    @Override
+    public int asignarDelta(int acum) {
+        baseType.asignarDelta(acum);
+        return acum + size();
+    }
 }

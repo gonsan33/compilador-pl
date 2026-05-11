@@ -1,7 +1,7 @@
 type punto : struct(x : int, y : int);
 
 fn mezcla(a : int, b : int, c : int) : int {
-    return a * 100 + b * 10 + c;
+	return a + b + c;
 }
 
 fn main() {

@@ -1,0 +1,27 @@
+type par : struct(a : int, b : int);
+
+fn suma(a : int, b : int) : int {
+    return a + b;
+}
+
+fn main() {
+    var x : int = 5;
+    var miPuntero : $int = &x;
+    var y : int = $miPuntero;
+
+    print(y);
+
+    $miPuntero = 9;
+    print(x);
+
+    var heapInt : $int = new int;
+    $heapInt = suma(x, 4);
+    print($heapInt);
+    delete heapInt;
+
+    var puntero : $par = new par;
+    $puntero.a = 7;
+    $puntero.b = 8;
+    print(suma($puntero.a, $puntero.b));
+    delete puntero;
+}

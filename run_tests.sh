@@ -116,7 +116,7 @@ run_codegen_tests() {
         if [ -f "$case_dir/input.txt" ]; then
             output=$(node "$codegen_dir/run_wasm.js" "$wasm" < "$case_dir/input.txt" 2>&1)
         else
-            output=$(node "$codegen_dir/run_wasm.js" "$wasm" 2>&1)
+            output=$(node "$codegen_dir/run_wasm.js" "$wasm" < /dev/null 2>&1)
         fi
 
         expected=$(cat "$case_dir/expected.out")
