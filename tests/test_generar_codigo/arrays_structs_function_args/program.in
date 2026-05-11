@@ -1,0 +1,22 @@
+type punto : struct(x : int, y : int);
+
+fn mezcla(a : int, b : int, c : int) : int {
+    return a * 100 + b * 10 + c;
+}
+
+fn main() {
+    var n : int = 3;
+    var nube : [5]punto;
+    var i : int = 0;
+    var total : int = 0;
+
+    while (i < n) {
+        print(i);
+        scan(nube[i].x);
+        scan(nube[i].y);
+        total = mezcla(total, nube[i].x, nube[i].y);
+        i = i + 1;
+    }
+
+    print(total);
+}

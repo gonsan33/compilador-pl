@@ -6,137 +6,153 @@ case "$(uname -s)" in
 esac
 CP=".${CP_SEP}cup.jar"
 
-# Generar lexer en caso de que no lo esté ya (no lo incluimos en el repo porque es algo "generable")
-if [ ! -f alex/AnalizadorLexicoTiny.java ]; then
-    echo "Generado lexer apartr de lexico.l"
-    java -cp jflex.jar jflex.Main lexico.l
-    mv AnalizadorLexicoTiny.java alex/
-fi
+generate_sources() {
+    if [ ! -f alex/AnalizadorLexicoTiny.java ] || [ lexico.l -nt alex/AnalizadorLexicoTiny.java ]; then
+        java -cp jflex.jar jflex.Main lexico.l
+        mv AnalizadorLexicoTiny.java alex/
+    fi
 
-# Generar parser en caso de que no lo esté ya (no lo incluimos en el repo porque es algo "generable")
-if [ ! -f asint/AnalizadorSintacticoTiny.java ]; then
-    echo "Generadno parser apartir de Tiny.cup"
-    java -cp cup.jar java_cup.Main -parser AnalizadorSintacticoTiny -symbols ClaseLexica -nopositions -expect 38 Tiny.cup
-    mv AnalizadorSintacticoTiny.java asint/
-    mv ClaseLexica.java asint/
-fi
+    if [ ! -f asint/AnalizadorSintacticoTiny.java ] || [ ! -f asint/ClaseLexica.java ] || [ Tiny.cup -nt asint/AnalizadorSintacticoTiny.java ]; then
+        java -cp cup.jar java_cup.Main -parser AnalizadorSintacticoTiny -symbols ClaseLexica -nopositions Tiny.cup
+        mv AnalizadorSintacticoTiny.java asint/
+        mv ClaseLexica.java asint/
+    fi
+}
 
-# Compilar todo
-if ! javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java tests/test_generar_codigo/CodeGenRunner.java; then
-    echo "Compilacion fallida: no se ejecutan los tests." >&2
-    exit 1
-fi
+compile_project() {
+    javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java tests/test_generar_codigo/CodeGenRunner.java
+}
 
-echo "Testear Léxico"
-LEX_DIR="tests/tests_lexico"
-lex_ok=0
-lex_fail=0
-if [ -d "$LEX_DIR" ]; then
-    for f in "$LEX_DIR"/*.in; do
+run_expected_error_tests() {
+    local title="$1"
+    local dir="$2"
+    local command_class="$3"
+    local error_pattern="$4"
+    local error_name_regex="$5"
+    local ok=0
+    local fail=0
+
+    echo ""
+    echo "$title"
+    for f in "$dir"/*.in; do
         [ -f "$f" ] || continue
-        output=$(java -cp "$CP" alex.Main "$f" 2>&1)
+
+        output=$(java -cp "$CP" "$command_class" "$f" 2>&1)
         exit_code=$?
-        case "$(basename "$f")" in
-            *"_err"*|*"invalid"*) expects_error=1 ;;
-            *) expects_error=0 ;;
-        esac
-        if printf '%s\n' "$output" | grep -Eq "ERROR|Caracter inesperado"; then
+
+        if [[ "$(basename "$f")" =~ $error_name_regex ]]; then
+            expects_error=1
+        else
+            expects_error=0
+        fi
+
+        if printf '%s\n' "$output" | grep -Eq "$error_pattern"; then
             has_error=1
         else
             has_error=0
         fi
+
         if [ $exit_code -eq 0 ] && [ $expects_error -eq $has_error ]; then
             echo "  OK   $f"
-            lex_ok=$((lex_ok + 1))
+            ok=$((ok + 1))
         else
-            echo "  FAIL $f (exit $exit_code, expected lexical error: $expects_error, found lexical error: $has_error)"
+            echo "  FAIL $f"
             printf '%s\n' "$output"
-            lex_fail=$((lex_fail + 1))
+            fail=$((fail + 1))
         fi
     done
-fi
-echo "--- Resultados léxico: $lex_ok OK, $lex_fail FAIL de $((lex_ok + lex_fail)) ficheros ---"
-if [ $lex_fail -gt 0 ]; then
+
+    echo "--- $title: $ok OK, $fail FAIL ---"
+    [ $fail -eq 0 ]
+}
+
+pick_wat2wasm() {
+    if [ "$(uname -s)" = "Darwin" ]; then
+        echo "./node_modules/.bin/wat2wasm"
+    else
+        echo "./wat2wasm"
+    fi
+}
+
+run_codegen_tests() {
+    local codegen_dir="tests/test_generar_codigo"
+    local build_dir="/tmp/compilador-pl-codegen"
+    local wat2wasm
+    local ok=0
+    local fail=0
+
+    echo ""
+    echo "Testear Generacion de Codigo"
+
+    wat2wasm=$(pick_wat2wasm)
+    if [ ! -x "$wat2wasm" ]; then
+        echo "  FAIL codegen: no se encontro $wat2wasm"
+        return 1
+    fi
+
+    mkdir -p "$build_dir"
+
+    for case_dir in "$codegen_dir"/*; do
+        [ -d "$case_dir" ] || continue
+        [ -f "$case_dir/program.in" ] || continue
+        [ -f "$case_dir/expected.out" ] || continue
+
+        case_name=$(basename "$case_dir")
+        wat="$build_dir/$case_name.wat"
+        wasm="$build_dir/$case_name.wasm"
+
+        if ! java -cp "$CP" tests.test_generar_codigo.CodeGenRunner "$case_dir/program.in" "$wat" >/dev/null; then
+            echo "  FAIL $case_name: no se pudo generar WAT"
+            fail=$((fail + 1))
+            continue
+        fi
+
+        if ! "$wat2wasm" "$wat" -o "$wasm"; then
+            echo "  FAIL $case_name: wat2wasm rechazo el WAT"
+            fail=$((fail + 1))
+            continue
+        fi
+
+        if [ -f "$case_dir/input.txt" ]; then
+            output=$(node "$codegen_dir/run_wasm.js" "$wasm" < "$case_dir/input.txt" 2>&1)
+        else
+            output=$(node "$codegen_dir/run_wasm.js" "$wasm" 2>&1)
+        fi
+
+        expected=$(cat "$case_dir/expected.out")
+        if [ "$output" = "$expected" ]; then
+            echo "  OK   $case_name"
+            ok=$((ok + 1))
+        else
+            echo "  FAIL $case_name"
+            echo "  Esperado:"
+            printf '%s\n' "$expected"
+            echo "  Obtenido:"
+            printf '%s\n' "$output"
+            fail=$((fail + 1))
+        fi
+    done
+
+    echo "--- Generacion de Codigo: $ok OK, $fail FAIL ---"
+    [ $fail -eq 0 ]
+}
+
+generate_sources || exit 1
+compile_project || {
+    echo "Compilacion fallida: no se ejecutan los tests." >&2
     exit 1
-fi
+}
+
+run_expected_error_tests "Testear Lexico" "tests/tests_lexico" "alex.Main" "ERROR|Caracter inesperado" "(_err|invalid)" || exit 1
 
 echo ""
 echo "Testear AST"
-java -cp "$CP" tests.tests_ast.ASTTest
-echo ""
+java -cp "$CP" tests.tests_ast.ASTTest || exit 1
 
-echo "Testear Binding"
-BIND_DIR="tests/tests_binding"
-bind_ok=0
-bind_fail=0
-
-if [ -d "$BIND_DIR" ]; then
-    for f in "$BIND_DIR"/*.in; do
-        [ -f "$f" ] || continue
-        output=$(java -cp "$CP" Main "$f" 2>&1)
-        exit_code=$?
-        case "$(basename "$f")" in
-            *"_err"*|*"undeclared"*|*"no_visible"*) expects_error=1 ;;
-            *) expects_error=0 ;;
-        esac
-        if printf '%s\n' "$output" | grep -q "ERROR BINDING"; then
-            has_error=1
-        else
-            has_error=0
-        fi
-        if [ $exit_code -eq 0 ] && [ $expects_error -eq $has_error ]; then
-            echo "  OK   $f"
-            bind_ok=$((bind_ok + 1))
-        else
-            echo "  FAIL $f (exit $exit_code, expected binding error: $expects_error, found binding error: $has_error)"
-            printf '%s\n' "$output"
-            bind_fail=$((bind_fail + 1))
-        fi
-    done
-fi
-echo "--- Resultados binding: $bind_ok OK, $bind_fail FAIL de $((bind_ok + bind_fail)) ficheros ---"
-if [ $bind_fail -gt 0 ]; then
-    exit 1
-fi
+run_expected_error_tests "Testear Binding" "tests/tests_binding" "Main" "ERROR BINDING" "(_err|undeclared|no_visible)" || exit 1
 
 echo ""
 echo "Testear Tipado"
-java -cp "$CP" tests.tests_type.TypeTest
+java -cp "$CP" tests.tests_type.TypeTest || exit 1
 
-echo ""
-echo "Testear Generacion de Codigo"
-CODEGEN_DIR="tests/test_generar_codigo"
-WAT2WASM="./node_modules/.bin/wat2wasm"
-CODEGEN_INPUT="$CODEGEN_DIR/cod_while_print_10.in"
-CODEGEN_WAT="$CODEGEN_DIR/cod_while_print_10.wat"
-CODEGEN_WASM="$CODEGEN_DIR/cod_while_print_10.wasm"
-CODEGEN_EXPECTED=$(printf "7\n8\n9\n10\n11\n12\n13\n14\n15\n16")
-
-if [ ! -x "$WAT2WASM" ]; then
-    echo "  FAIL codegen while 10: no se encontro $WAT2WASM"
-    exit 1
-fi
-
-if ! java -cp "$CP" tests.test_generar_codigo.CodeGenRunner "$CODEGEN_INPUT" "$CODEGEN_WAT"; then
-    echo "  FAIL codegen while 10: no se pudo generar WAT"
-    exit 1
-fi
-
-if ! "$WAT2WASM" "$CODEGEN_WAT" -o "$CODEGEN_WASM"; then
-    echo "  FAIL codegen while 10: wat2wasm rechazo el WAT generado"
-    exit 1
-fi
-
-codegen_output=$(printf "7\n" | node "$CODEGEN_DIR/run_while_print_10.js" "$CODEGEN_WASM" 2>&1)
-codegen_exit=$?
-
-if [ $codegen_exit -eq 0 ] && [ "$codegen_output" = "$CODEGEN_EXPECTED" ]; then
-    echo "  OK   $CODEGEN_INPUT"
-else
-    echo "  FAIL $CODEGEN_INPUT"
-    echo "  Esperado:"
-    printf '%s\n' "$CODEGEN_EXPECTED"
-    echo "  Obtenido:"
-    printf '%s\n' "$codegen_output"
-    exit 1
-fi
+run_codegen_tests || exit 1

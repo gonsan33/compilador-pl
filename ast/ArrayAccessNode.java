@@ -57,18 +57,12 @@ public class ArrayAccessNode extends DesignatorNode {
     public StringBuilder generateCodeL() {
         StringBuilder str = new StringBuilder();
 
-        str.append(this.designator.generateCode());
+        str.append(this.designator.generateCodeL());
         str.append(this.index.generateCode());
 
         str.append("i32.const ").append(this.getType().size()).append(System.lineSeparator());
         str.append("i32.mul").append(System.lineSeparator());
         str.append("i32.add").append(System.lineSeparator());
-
-        // Accedemos al elemento solo si estamos procesando la última dimensión del
-        // array
-        if (!(this.getType() instanceof ArrayTypeNode)) {
-            str.append("i32.load").append(System.lineSeparator());
-        }
 
         return str;
     }

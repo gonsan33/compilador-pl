@@ -84,7 +84,12 @@ public class VariableDeclarationNode extends SentenceNode {
             str.append("i32.store\n");
         }
         if(this.newNode != null) {
-            
+            str.append("i32.const " + this.delta); 
+            str.append("\n");
+            str.append("local.get $localsStart\n"); 
+            str.append("i32.add\n");
+            str.append(this.newNode.generateCode());
+            str.append("i32.store\n");
         }
         return str; 
     }

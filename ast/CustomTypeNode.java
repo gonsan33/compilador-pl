@@ -46,4 +46,9 @@ public class CustomTypeNode extends TypeNode {
     public String typeName() {
         return this.identifier;
     }
+
+    @Override
+    public int asignarDelta(int acum) {
+        return declaration.getType().asignarDelta(acum);
+    }
 }

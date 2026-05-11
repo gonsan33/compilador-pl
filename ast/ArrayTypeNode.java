@@ -43,5 +43,10 @@ public class ArrayTypeNode extends TypeNode{
         return "Array(size = " + size + ", elementType = " + elementType + ")"; 
     }
 
+    @Override
+    public int asignarDelta(int acum) {
+        elementType.asignarDelta(acum);
+        return acum + size();
+    }
  
 }

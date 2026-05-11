@@ -1,0 +1,16 @@
+type caja : struct(x : int, y : int);
+
+fn suma3(a : int, b : int, c : int) : int {
+    return a + b + c;
+}
+
+fn main() {
+    var p : $caja = new caja;
+
+    $p.x = 7;
+    $p.y = 5;
+
+    print(suma3($p.x, $p.y, 30));
+
+    delete p;
+}

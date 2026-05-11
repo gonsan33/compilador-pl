@@ -18,6 +18,7 @@ public class ScanNode extends SentenceNode {
 
     @Override
     public void typeCheck() {
+        designator.typeCheck();
         if (!(designator instanceof DesignatorNode)) {
             new errors.GestionErroresTiny().errorTipos("Pasa un \"designador\" al scan");
         }

@@ -95,12 +95,13 @@ E0 ::= E0:l MAS E1:r {: RESULT = new BinaryExpressionNode(BinaryOperation.SUM, l
 E1 ::= E1:l POR E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MULTIPLICATION, l, r); :} | E1:l DIV E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.DIVISION, l, r); :} | E1:l AND E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.AND, l, r); :} | 
 E1:l MOD E2:r {: RESULT = new BinaryExpressionNode(BinaryOperation.MODULE, l, r); :} | 
 E2:res {: RESULT = res; :};
-E2 ::=AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAND, e); :} 
+E2 ::= DOLAR E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.DOLAR, e); :} 
+| AMPERSAND E3:e {: RESULT = new UnaryExpressionNode(UnaryOperation.AMPERSAND, e); :} 
 | MAS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MAS, e); :} 
 | MENOS E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.MENOS, e); :} 
 | NOT E2:e {: RESULT = new UnaryExpressionNode(UnaryOperation.NOT, e); :} 
 | E3:e {: RESULT = e; :};
-E3 ::= DESIGNADOR:d {: RESULT = d; :} |ENT:e {: RESULT = new IntNode(e.lexema);:} | TRUE {: RESULT = new BooleanNode(true); :} | FALSE {: RESULT = new BooleanNode(false); :} | PAP EXPRESION:e PCIERRE {: RESULT = e; :};
+E3 ::= DESIGNADOR:d {: RESULT = d; :} | LLAMADA_FUNCION:f {: RESULT = f; :} | ENT:e {: RESULT = new IntNode(e.lexema);:} | TRUE {: RESULT = new BooleanNode(true); :} | FALSE {: RESULT = new BooleanNode(false); :} | PAP EXPRESION:e PCIERRE {: RESULT = e; :};
 
 
 TIPO_DE_VARIABLE ::= CAP ENT:s CCIERRE TIPO_DE_VARIABLE:t {: RESULT = new ArrayTypeNode(s.lexema, t); :} | T1:t {: RESULT = t; :};
