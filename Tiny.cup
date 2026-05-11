@@ -132,7 +132,7 @@ LISTA_ARGUMENTOS_REST ::= COMA EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e
 DESIGNADOR ::= DESIGNADOR:d CAP EXPRESION:e CCIERRE {: RESULT = new ArrayAccessNode(d, e); :} | D1:d {: RESULT = d; :};
 D1 ::= D1:d PUNTO D2:f {: RESULT = new FieldAccessNode(d, f.toString()); :} | D2:d {: RESULT = d; :};
 D2 ::= IDEN:id {: RESULT = new IdentifierNode(id.lexema); :} |IDEN:id PAP LISTA_ARGUMENTOS:l PCIERRE {: RESULT = new FunctionCallNode(id.lexema, l); :} |D3:d {: RESULT = d; :};
-D3 ::= DOLAR D3:d {: RESULT = new PointerAccessNode(d); :}; 
+D3 ::= DOLAR D3:d {: RESULT = new PointerAccessNode(d); :} | DOLAR IDEN:id {: RESULT = new PointerAccessNode(new IdentifierNode(id.lexema)); :} | PAP DESIGNADOR:d PCIERRE {: RESULT = d; :};
 
 INSTR_CONTROL ::= INSTR_WHILE:w {: RESULT = w; :} | INSTR_FOR:f {: RESULT = f; :} | INSTR_IF:i {: RESULT = i; :} | INSTR_RETURN:r {: RESULT = r; :};
 

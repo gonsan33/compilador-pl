@@ -63,7 +63,7 @@ public class IfNode extends ControlSentenceNode {
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
         str.append(this.boolean_expression.generateCode());
-        str.append("if");
+        str.append("if ");
         str.append(this.block.generateCode());
         if (elseBlock != null) {
             str.append("else \n");

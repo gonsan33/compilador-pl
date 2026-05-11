@@ -1,6 +1,6 @@
 const { readFileSync } = require("fs");
 
-const wasmPath = process.argv[2] || "tests/test_generar_codigo/cod_while_print_10.wasm";
+const wasmPath = process.argv[2] || "tests/test_generar_codigo/caca.wasm";
 const input = readFileSync(0, "utf8")
   .trim()
   .split(/\s+/)
