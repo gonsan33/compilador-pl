@@ -22,7 +22,7 @@ if [ ! -f asint/AnalizadorSintacticoTiny.java ]; then
 fi
 
 # Compilar todo
-if ! javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java; then
+if ! javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java tests/test_generar_codigo/CodeGenRunner.java; then
     echo "Compilacion fallida: no se ejecutan los tests." >&2
     exit 1
 fi
@@ -102,3 +102,41 @@ fi
 echo ""
 echo "Testear Tipado"
 java -cp "$CP" tests.tests_type.TypeTest
+
+echo ""
+echo "Testear Generacion de Codigo"
+CODEGEN_DIR="tests/test_generar_codigo"
+WAT2WASM="./node_modules/.bin/wat2wasm"
+CODEGEN_INPUT="$CODEGEN_DIR/cod_while_print_10.in"
+CODEGEN_WAT="$CODEGEN_DIR/cod_while_print_10.wat"
+CODEGEN_WASM="$CODEGEN_DIR/cod_while_print_10.wasm"
+CODEGEN_EXPECTED=$(printf "7\n8\n9\n10\n11\n12\n13\n14\n15\n16")
+
+if [ ! -x "$WAT2WASM" ]; then
+    echo "  FAIL codegen while 10: no se encontro $WAT2WASM"
+    exit 1
+fi
+
+if ! java -cp "$CP" tests.test_generar_codigo.CodeGenRunner "$CODEGEN_INPUT" "$CODEGEN_WAT"; then
+    echo "  FAIL codegen while 10: no se pudo generar WAT"
+    exit 1
+fi
+
+if ! "$WAT2WASM" "$CODEGEN_WAT" -o "$CODEGEN_WASM"; then
+    echo "  FAIL codegen while 10: wat2wasm rechazo el WAT generado"
+    exit 1
+fi
+
+codegen_output=$(printf "7\n" | node "$CODEGEN_DIR/run_while_print_10.js" "$CODEGEN_WASM" 2>&1)
+codegen_exit=$?
+
+if [ $codegen_exit -eq 0 ] && [ "$codegen_output" = "$CODEGEN_EXPECTED" ]; then
+    echo "  OK   $CODEGEN_INPUT"
+else
+    echo "  FAIL $CODEGEN_INPUT"
+    echo "  Esperado:"
+    printf '%s\n' "$CODEGEN_EXPECTED"
+    echo "  Obtenido:"
+    printf '%s\n' "$codegen_output"
+    exit 1
+fi

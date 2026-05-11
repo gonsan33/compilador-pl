@@ -20,6 +20,7 @@ public class PointerAccessNode extends DesignatorNode {
 
     @Override
     public void typeCheck() {
+        designator.typeCheck();
         if (!(designator.getType() instanceof PointerTypeNode)) {
             new GestionErroresTiny().errorTipos("El designador no es un puntero");
         }
@@ -27,7 +28,11 @@ public class PointerAccessNode extends DesignatorNode {
 
     @Override
     public TypeNode getType() {
-        return ((PointerTypeNode) this.designator.getType()).getBaseType();
+        TypeNode designatorType = this.designator.getType();
+        if (designatorType instanceof PointerTypeNode) {
+            return ((PointerTypeNode) designatorType).getBaseType();
+        }
+        return designatorType;
     }
 
 

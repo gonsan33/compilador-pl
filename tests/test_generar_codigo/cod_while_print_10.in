@@ -1,0 +1,11 @@
+fn main() {
+    var n : int;
+    var i : int = 0;
+
+    scan(n);
+
+    while (i < 10) {
+        print(n + i);
+        i = i + 1;
+    }
+}
