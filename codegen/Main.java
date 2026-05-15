@@ -1,4 +1,4 @@
-package tests.test_generar_codigo;
+package codegen;
 
 import alex.AnalizadorLexicoTiny;
 import asint.AnalizadorSintacticoTiny;
@@ -8,10 +8,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java_cup.runtime.Symbol;
 
-public class CodeGenRunner {
+public class Main {
     public static void main(String[] args) throws Exception {
         if (args.length < 1 || args.length > 2) {
-            System.out.println("Uso: java -cp .:cup.jar tests.test_generar_codigo.CodeGenRunner <entrada.in> [salida.wat]");
+            System.out.println(
+                "Uso: java -cp .:cup.jar codegen.Main <entrada.in> [salida.wat]"
+            );
             System.exit(1);
         }
 

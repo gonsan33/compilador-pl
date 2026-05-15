@@ -30,7 +30,7 @@ terminal     MAS, MENOS, POR, DIV, PAP, PCIERRE, CAP, CCIERRE, LLAP, LLCIERRE,
              NEW, DELETE, BOOL, INT, TYPEDEF, STRUCT, TRUE, FALSE, PRINT, SCAN, PUNTO;
 
 
-non terminal ExpressionNode EXPRESION, E0, E1, E2, E2B,E3, LLAMADA_FUNCION, EXPRESION_OPT;
+non terminal ExpressionNode EXPRESION, E0, E1, E2, E3, EXPRESION_OPT;
 non terminal DesignatorNode DESIGNADOR, D1, D2, D3;
 non terminal TypeNode TIPO_DE_VARIABLE, T1, T2;
 non terminal ProgramNode PROGRAMA;
@@ -40,7 +40,7 @@ non terminal SentenceNode INSTRUCCION, INSTR_CONTROL, ASIGNACION, INSTR_PRINT, I
 non terminal WhileNode INSTR_WHILE;
 non terminal ForNode INSTR_FOR;
 non terminal IfNode INSTR_IF;
-non terminal SentenceNode RAMA_ELSE;
+non terminal BlockNode RAMA_ELSE;
 non terminal ReturnNode INSTR_RETURN;
 non terminal BlockNode BLOQUE;
 non terminal VariableDeclarationNode DECL_VARIABLE;
@@ -64,7 +64,7 @@ INSTRUCCION ::= DECL_FUNCION:d PUNTOCOMA {: RESULT = d; :}
  | INSTR_SCAN:s {: RESULT = s; :}
  | DELETE DESIGNADOR:d PUNTOCOMA {: RESULT = new DeleteNode(d); :}
  | ASIGNACION:a {: RESULT = a; :};
- LISTA_INSTRUCCIONES_BLOQUE ::= INSTRUCCION:i LISTA_INSTRUCCIONES_BLOQUE:l {: l.add(0, i); RESULT = l; :}
+ LISTA_INSTRUCCIONES_BLOQUE ::= INSTRUCCION_BLOQUE:i LISTA_INSTRUCCIONES_BLOQUE:l {: l.add(0, i); RESULT = l; :}
 | {: RESULT = new ArrayList<SentenceNode>(); :};
 INSTRUCCION_BLOQUE::= DECL_VARIABLE:d PUNTOCOMA {: RESULT = d; :}
  | BLOQUE:b {: RESULT = b; :}
@@ -120,7 +120,6 @@ FUNCION ::= FUNDEF IDEN:id PAP LISTA_DECLARACIONES:l PCIERRE TFUN:t BLOQUE:b {: 
 BLOQUE ::= LLAP LISTA_INSTRUCCIONES_BLOQUE:l LLCIERRE {: RESULT = new BlockNode(l); :};
 
 
-LLAMADA_FUNCION ::= IDEN:id PAP LISTA_ARGUMENTOS:l PCIERRE {: RESULT = new FunctionCallNode(id.lexema, l); :};
 LISTA_ARGUMENTOS ::= EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e); RESULT = r; :}
  | {: RESULT = new ArrayList<ExpressionNode>(); :};
 LISTA_ARGUMENTOS_REST ::= COMA EXPRESION:e LISTA_ARGUMENTOS_REST:r {: r.add(0, e); RESULT = r; :}
@@ -143,6 +142,6 @@ EXPRESION_OPT ::= EXPRESION:e {: RESULT = e; :} | {: RESULT = null; :};
 DECL_VAR_OPT ::= DECL_VARIABLE:d {: RESULT = d; :} | {: RESULT = null; :};
 ASIGNACION_OPT ::= DESIGNADOR:d ASIGN EXPRESION:e {: RESULT = new AssignNode(d, e); :} | {: RESULT = null; :};
 INSTR_FOR ::= FOR PAP DECL_VAR_OPT:init PUNTOCOMA EXPRESION_OPT:cond PUNTOCOMA ASIGNACION_OPT:step PCIERRE BLOQUE:b {: RESULT = new ForNode(init, cond, step, b); :};
-INSTR_IF ::= IF PAP EXPRESION:e PCIERRE BLOQUE:b ELSE BLOQUE:elseB {: RESULT = new IfNode(e, b, elseB); :} | IF PAP EXPRESION:e PCIERRE BLOQUE:b  {: RESULT = new IfNode(e, b, null); :};
+INSTR_IF ::= IF PAP EXPRESION:e PCIERRE BLOQUE:b RAMA_ELSE:elseB {: RESULT = new IfNode(e, b, elseB); :};
 RAMA_ELSE ::= ELSE BLOQUE:b {: RESULT = b; :} | {: RESULT = null; :};
 INSTR_RETURN ::= RETURN EXPRESION:e PUNTOCOMA {: RESULT = new ReturnNode(e); :};

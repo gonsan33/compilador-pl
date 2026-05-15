@@ -17,7 +17,7 @@ generate_sources() {
 }
 
 compile_project() {
-    javac -encoding UTF-8 -cp "$CP" */*.java Main.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java tests/test_generar_codigo/CodeGenRunner.java
+    javac -encoding UTF-8 -cp "$CP" Main.java */*.java tests/tests_ast/ASTTest.java tests/tests_type/TypeTest.java
 }
 
 run_expected_error_tests() {
@@ -64,10 +64,29 @@ run_expected_error_tests() {
 }
 
 pick_wat2wasm() {
-    if [ "$(uname -s)" = "Darwin" ]; then
-        echo "./node_modules/.bin/wat2wasm"
-    else
-        echo "./wat2wasm"
+    local candidate
+
+    for candidate in "./wat2wasm" "./wat2wasm.exe" "./node_modules/.bin/wat2wasm"; do
+        if [ -x "$candidate" ] && "$candidate" --version >/dev/null 2>&1; then
+            echo "$candidate"
+            return
+        fi
+    done
+
+    if command -v wat2wasm >/dev/null 2>&1; then
+        candidate=$(command -v wat2wasm)
+        if "$candidate" --version >/dev/null 2>&1; then
+            echo "$candidate"
+            return
+        fi
+    fi
+
+    if command -v wat2wasm.exe >/dev/null 2>&1; then
+        candidate=$(command -v wat2wasm.exe)
+        if "$candidate" --version >/dev/null 2>&1; then
+            echo "$candidate"
+            return
+        fi
     fi
 }
 
@@ -98,7 +117,7 @@ run_codegen_tests() {
         wat="$build_dir/$case_name.wat"
         wasm="$build_dir/$case_name.wasm"
 
-        if ! java -cp "$CP" tests.test_generar_codigo.CodeGenRunner "$case_dir/program.in" "$wat" >/dev/null; then
+        if ! java -cp "$CP" codegen.Main "$case_dir/program.in" "$wat" >/dev/null; then
             echo "  FAIL $case_name: no se pudo generar WAT"
             fail=$((fail + 1))
             continue
@@ -111,9 +130,9 @@ run_codegen_tests() {
         fi
 
         if [ -f "$case_dir/input.txt" ]; then
-            output=$(node "$codegen_dir/run_wasm.js" "$wasm" < "$case_dir/input.txt" 2>&1)
+            output=$(node run_wasm.js "$wasm" < "$case_dir/input.txt" 2>&1)
         else
-            output=$(node "$codegen_dir/run_wasm.js" "$wasm" < /dev/null 2>&1)
+            output=$(node run_wasm.js "$wasm" < /dev/null 2>&1)
         fi
 
         expected=$(cat "$case_dir/expected.out")
