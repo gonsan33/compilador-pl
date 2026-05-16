@@ -49,7 +49,8 @@ run_expected_error_tests() {
             has_error=0
         fi
 
-        if [ $exit_code -eq 0 ] && [ $expects_error -eq $has_error ]; then
+        if { [ $expects_error -eq 1 ] && [ $has_error -eq 1 ]; } ||
+           { [ $expects_error -eq 0 ] && [ $has_error -eq 0 ] && [ $exit_code -eq 0 ]; }; then
             echo "  OK   $f"
             ok=$((ok + 1))
         else
@@ -117,8 +118,11 @@ run_codegen_tests() {
         wat="$build_dir/$case_name.wat"
         wasm="$build_dir/$case_name.wasm"
 
-        if ! java -cp "$CP" codegen.Main "$case_dir/program.in" "$wat" >/dev/null; then
+        output=$(java -cp "$CP" codegen.Main "$case_dir/program.in" "$wat" 2>&1)
+        exit_code=$?
+        if [ $exit_code -ne 0 ]; then
             echo "  FAIL $case_name: no se pudo generar WAT"
+            printf '%s\n' "$output"
             fail=$((fail + 1))
             continue
         fi

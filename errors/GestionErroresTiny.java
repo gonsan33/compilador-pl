@@ -22,7 +22,7 @@ public class GestionErroresTiny {
 
   public static void printErrorsAndExit() {
     if (hasErrors()) {
-      //System.exit(1);
+      System.exit(1);
     }
   }
 
