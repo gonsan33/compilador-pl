@@ -74,14 +74,14 @@ public class ForNode extends ControlSentenceNode {
     @Override
     public StringBuilder generateCode() {
         StringBuilder str = new StringBuilder();
-        str.append(init.generateCode());
+        if(init != null) str.append(init.generateCode());
         str.append("block\n");
         str.append("loop\n");
         str.append(boolean_expression.generateCode());
         str.append("i32.eqz\n");
         str.append("br_if 1\n");
         str.append(this.block.generateCode());
-        str.append(step.generateCode());
+        if(step != null) str.append(step.generateCode());
         str.append("br 0 \n");
         str.append("end \n");
         str.append("end \n");

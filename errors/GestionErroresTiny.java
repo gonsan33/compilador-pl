@@ -1,31 +1,58 @@
 package errors;
 
 import alex.UnidadLexica;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GestionErroresTiny {
+  private static List<String> errores = new ArrayList<>();
+  private static GestionErroresTiny instance = new GestionErroresTiny();
+
+  public static GestionErroresTiny getInstance() {
+    return instance;
+  }
+
+  public static void reset() {
+    errores.clear();
+  }
+
+  public static boolean hasErrors() {
+    return !errores.isEmpty();
+  }
+
+  public static void printErrorsAndExit() {
+    if (hasErrors()) {
+      //System.exit(1);
+    }
+  }
+
   public void errorLexico(int fila, int columna, String lexema) {
-    System.out.println("ERROR fila " + fila + " columna " + columna + ": Caracter inesperado: " + lexema);
-    //System.exit(1);
+    String msg = "ERROR fila " + fila + " columna " + columna + ": Caracter inesperado: " + lexema;
+    System.out.println(msg);
+    errores.add(msg);
   }
 
   public void errorSintactico(UnidadLexica unidadLexica) {
+    String msg;
     if (unidadLexica.lexema() != null) {
-      System.out.println("ERROR fila " + unidadLexica.fila() + " columna " + unidadLexica.columna()
-          + ": Elemento inesperado \"" + unidadLexica.lexema() + "\"");
+      msg = "ERROR fila " + unidadLexica.fila() + " columna " + unidadLexica.columna()
+          + ": Elemento inesperado \"" + unidadLexica.lexema() + "\"";
     } else {
-      System.out.println(
-          "ERROR fila " + unidadLexica.fila() + " columna " + unidadLexica.columna() + ": Elemento inesperado");
+      msg = "ERROR fila " + unidadLexica.fila() + " columna " + unidadLexica.columna() + ": Elemento inesperado";
     }
-    //System.exit(1);
+    System.out.println(msg);
+    errores.add(msg);
   }
 
   public void errorBinding(String message) {
-    System.out.println("ERROR BINDING: " + message);
-    //System.exit(1);
+    String msg = "ERROR BINDING: " + message;
+    System.out.println(msg);
+    errores.add(msg);
   }
 
   public void errorTipos(String message) {
-    System.out.println("ERROR TYPECHECK: " + message);
-    //System.exit(1);
+    String msg = "ERROR TYPECHECK: " + message;
+    System.out.println(msg);
+    errores.add(msg);
   }
 }

@@ -150,4 +150,10 @@ public class ProgramNode extends SentenceNode {
         }
     }
 
+    public int asignarDelta(int acum) {
+        for (SentenceNode instruction : instructions) {
+            acum = instruction.asignarDelta(acum);
+        }
+        return acum;
+    }
 }

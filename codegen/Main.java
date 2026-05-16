@@ -3,6 +3,7 @@ package codegen;
 import alex.AnalizadorLexicoTiny;
 import asint.AnalizadorSintacticoTiny;
 import ast.ProgramNode;
+import errors.GestionErroresTiny;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -26,8 +27,22 @@ public class Main {
         Symbol result = parser.parse();
 
         ProgramNode program = (ProgramNode) result.value;
+        
         program.bind();
+        if (GestionErroresTiny.hasErrors()) {
+            return; 
+        }
+        
         program.typeCheck();
+        if (GestionErroresTiny.hasErrors()) {
+            return;
+        }
+        
+        program.asignarDelta(0);  // Asigna deltas a todas las variables
+        if (GestionErroresTiny.hasErrors()) {
+            return;
+        }
+
         program.writeWatFile(outputPath);
 
         System.out.println("WAT generado en: " + outputPath);

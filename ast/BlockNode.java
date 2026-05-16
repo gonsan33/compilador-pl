@@ -70,9 +70,12 @@ public class BlockNode extends SentenceNode {
     }
 
     public int asignarDelta(int acum) {
+        int curr = acum; 
         for (SentenceNode node : this.instructions) {
             acum = node.asignarDelta(acum);
         }
-        return acum;
+        return curr; 
     }
+
+    
 }

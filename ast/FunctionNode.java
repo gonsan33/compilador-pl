@@ -3,6 +3,7 @@ package ast;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
@@ -83,13 +84,15 @@ public class FunctionNode extends SentenceNode {
         str.append("\n");
         str.append("  (local $localsStart i32)\n");
         str.append("  (local $temp i32)\n");
-        int tamTotal = 0;
-        for (ParameterNode param : params) {
-            param.setDelta(tamTotal);
-            tamTotal += param.esPorReferencia() ? 4 : param.getType().size();
+        int tamTotal = 4;
+        
+        if (body != null) {
+            AtomicInteger max = new AtomicInteger(4);
+            AtomicInteger curr = new AtomicInteger(4);
+            this.maxSize(body, curr, max);
+            tamTotal = max.get(); // Delta de las locales que declare
         }
-        if (body != null)
-            tamTotal = body.asignarDelta(tamTotal); // Delta de las locales que declare
+  
         str.append("  i32.const " + tamTotal + "\n");
         str.append("  call $reserveStack\n");
         str.append("  local.set $temp\n");
@@ -136,22 +139,33 @@ public class FunctionNode extends SentenceNode {
         return hijos;
     }
 
-    public void maxSize(ASTNode a, Integer c, Integer max) {
+    public void maxSize(ASTNode a, AtomicInteger c, AtomicInteger max) {
         if (a instanceof VariableDeclarationNode) {
-            c += ((VariableDeclarationNode) a).getType().size();
-            if (c > max)
-                max = c;
+            c.addAndGet(((VariableDeclarationNode) a).getType().size());
+            if (c.get() > max.get())
+                max.set(c.get());
         } else if (a instanceof BlockNode) {
-            Integer c1 = c;
+            AtomicInteger c1 = new AtomicInteger(c.get());
             for (SentenceNode n : ((BlockNode) a).instructions) {
                 maxSize(n, c, max);
             }
-            c = c1;
+            c.set(c1.get());
         } else {
             for (ASTNode n : a.hijos()) {
                 maxSize(n, c, max);
             }
         }
     }
-
+    public int asignarDelta(int acum) {
+        int tamTotal = 4; // Delta de las locales que declare
+        for (ParameterNode param : params) {
+            param.setDelta(tamTotal);
+            tamTotal += param.esPorReferencia() ? 4 : param.getType().size();
+        }
+        //asignar delta a las variables locales
+        if (body != null) {
+            body.asignarDelta(tamTotal);
+        }
+        return tamTotal;
+    }
 }

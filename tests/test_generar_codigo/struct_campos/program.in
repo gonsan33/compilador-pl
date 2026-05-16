@@ -1,0 +1,12 @@
+type punto : struct(x : int, y : int);
+
+fn mezcla(a : int, b : int, c : int) : int {
+	return a + b + c;
+}
+
+fn main() {
+    var nube : punto;
+    
+    print(nube.x); 
+
+}

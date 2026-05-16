@@ -70,7 +70,7 @@ public class StructTypeNode extends TypeNode {
         return "struct";
     }
 
-    public int asignarDelta(int acum) {
+    public int asignarDelta(int acum) {//cuando me llaman, acum = 0, ver variable declaration node 
         for (ParameterNode p : fields) {
             p.setDelta(acum);
             acum += p.getType().size();
