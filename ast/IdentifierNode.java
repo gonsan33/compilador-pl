@@ -53,6 +53,11 @@ public class IdentifierNode extends DesignatorNode{
             code.append("local.get $localsStart\n");
             code.append("i32.add\n");
         }
+        if (declaration instanceof ParameterNode) {
+            if (((ParameterNode) declaration).esPorReferencia()) { 
+                code.append("i32.load\n");
+            }
+        }
         return code;
     }
 }
