@@ -1,0 +1,14 @@
+fn main() {
+    var x : int = 0;
+    if (x == 0) {
+        var y : int = 5;
+        print(y);
+    }
+
+    var total : int = 0;
+    for (var i : int = 0; i < 3; i = i + 1) {
+        var tmp : int = i + 1;
+        total = total + tmp;
+    }
+    print(total);
+}

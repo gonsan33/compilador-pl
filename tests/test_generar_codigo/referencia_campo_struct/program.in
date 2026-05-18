@@ -1,0 +1,14 @@
+type Pair : struct(a : int, b : int);
+
+fn set(v : &int) : int {
+    v = 30;
+    return v;
+}
+
+fn main() {
+    var p : Pair;
+    p.a = 1;
+    p.b = 2;
+    print(set(p.b));
+    print(p.b);
+}

@@ -1,0 +1,12 @@
+fn id(v : int) : int {
+    return v;
+}
+
+fn one() : int {
+    return 1;
+}
+
+fn main() {
+    print(id(id(7)));
+    print(one() + one() + one());
+}

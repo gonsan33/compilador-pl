@@ -1,0 +1,13 @@
+type Pair : struct(a : int, b : int);
+
+fn second(p : Pair) : int {
+    return p.b;
+}
+
+fn main() {
+    var p : Pair;
+    p.a = 4;
+    p.b = 8;
+    print(second(p));
+    print(p.b);
+}
