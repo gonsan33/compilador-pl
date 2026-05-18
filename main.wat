@@ -79,10 +79,10 @@
     end
   end
 )
-(func $suma
+(func $useGlobal (result i32)
   (local $localsStart i32)
   (local $temp i32)
-  i32.const 16
+  i32.const 8
   call $reserveStack
   local.set $temp
   global.get $MP
@@ -92,182 +92,17 @@
   i32.const 4
   i32.add
   local.set $localsStart
-i32.const 8
-  local.get $localsStart
-  i32.add
-i32.const 1
-i32.store
-block
-loop
-i32.const 8
-local.get $localsStart
-i32.add
-i32.load
-i32.const 6
-i32.lt_s
-i32.eqz
-br_if 1
-i32.const 4
-local.get $localsStart
-i32.add
-i32.load
-i32.const 8
-local.get $localsStart
-i32.add
-i32.load
-i32.const 4
-i32.mul
-i32.add
-i32.const 4
-local.get $localsStart
-i32.add
-i32.load
-i32.const 8
-local.get $localsStart
-i32.add
-i32.load
-i32.const 4
-i32.mul
-i32.add
-i32.load
-i32.const 4
-local.get $localsStart
-i32.add
-i32.load
-i32.const 8
-local.get $localsStart
-i32.add
-i32.load
-i32.const 1
-i32.sub
-i32.const 4
-i32.mul
-i32.add
-i32.load
-i32.add
-i32.store
-i32.const 8
-local.get $localsStart
-i32.add
-i32.const 8
-local.get $localsStart
-i32.add
-i32.load
-i32.const 1
-i32.add
-i32.store
-br 0 
-end 
-end 
-  call $freeStack
-)
-(func $main
-  (local $localsStart i32)
-  (local $temp i32)
-  i32.const 40
-  call $reserveStack
-  local.set $temp
-  global.get $MP
-  local.get $temp
-  i32.store
-  global.get $MP
-  i32.const 4
-  i32.add
-  local.set $localsStart
-i32.const 28
-  local.get $localsStart
-  i32.add
 i32.const 0
-i32.store
-block
-loop
-i32.const 28
-local.get $localsStart
-i32.add
 i32.load
-i32.const 6
-i32.lt_s
-i32.eqz
-br_if 1
-i32.const 4
-local.get $localsStart
-i32.add
-i32.const 28
-local.get $localsStart
-i32.add
-i32.load
-i32.const 4
-i32.mul
-i32.add
-i32.const 28
-local.get $localsStart
-i32.add
-i32.load
-i32.store
-i32.const 28
-local.get $localsStart
-i32.add
-i32.const 28
-local.get $localsStart
-i32.add
-i32.load
-i32.const 1
-i32.add
-i32.store
-br 0 
-end 
-end 
-global.get $SP
-i32.const 4
-i32.add
-i32.const 4
-local.get $localsStart
-i32.add
-i32.store offset=4
-call $suma
-i32.const 32
-  local.get $localsStart
-  i32.add
-i32.const 0
-i32.store
-block
-loop
-i32.const 32
-local.get $localsStart
-i32.add
-i32.load
-i32.const 6
-i32.lt_s
-i32.eqz
-br_if 1
-i32.const 4
-local.get $localsStart
-i32.add
-i32.const 32
-local.get $localsStart
-i32.add
-i32.load
-i32.const 4
-i32.mul
-i32.add
-i32.load
-  call $print
-i32.const 32
-local.get $localsStart
-i32.add
-i32.const 32
-local.get $localsStart
-i32.add
-i32.load
-i32.const 1
-i32.add
-i32.store
-br 0 
-end 
-end 
+call $freeStack
+return
+  i32.const 0
   call $freeStack
 )
 (func $initialize
+i32.const 0
+i32.const 7
+i32.store
   call $main
 )
 
