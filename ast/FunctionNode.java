@@ -85,15 +85,18 @@ public class FunctionNode extends SentenceNode {
         str.append("  (local $localsStart i32)\n");
         str.append("  (local $temp i32)\n");
         int tamTotal = 4;
+        for (ParameterNode param : params) {
+            tamTotal += param.esPorReferencia() ? 4 : param.getType().size();
+        }
         
         if (body != null) {
-            AtomicInteger max = new AtomicInteger(4);
-            AtomicInteger curr = new AtomicInteger(4);
+            AtomicInteger max = new AtomicInteger(tamTotal);
+            AtomicInteger curr = new AtomicInteger(tamTotal);
             this.maxSize(body, curr, max);
             tamTotal = max.get(); // Delta de las locales que declare
         }
   
-        str.append("  i32.const " + tamTotal + "\n");
+        str.append("  i32.const " + (tamTotal + 4) + "\n");
         str.append("  call $reserveStack\n");
         str.append("  local.set $temp\n");
         str.append("  global.get $MP\n");

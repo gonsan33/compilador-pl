@@ -1,4 +1,10 @@
-var x: int = 10; 
-fn main (){
-  print (x);
-}
+  fn id(v : int) : int {
+      return v;
+  }
+
+  fn main() {
+      var arr : [2]int;
+      arr[1] = 9;
+	  print(id(arr[1]));
+      print(arr[1]);
+  }

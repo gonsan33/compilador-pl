@@ -82,7 +82,7 @@
 (func $useGlobal (result i32)
   (local $localsStart i32)
   (local $temp i32)
-  i32.const 4
+  i32.const 8
   call $reserveStack
   local.set $temp
   global.get $MP

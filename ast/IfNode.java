@@ -45,7 +45,9 @@ public class IfNode extends ControlSentenceNode {
     @Override
     public void setFunction(FunctionNode function) {
         super.setFunction(function);
-        elseBlock.setFunction(function);
+        if (elseBlock != null) {
+            elseBlock.setFunction(function);
+        }
         
     }
 
