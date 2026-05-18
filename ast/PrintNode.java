@@ -1,5 +1,7 @@
 package ast;
 
+import errors.GestionErroresTiny;
+
 public class PrintNode extends SentenceNode {
     protected ExpressionNode expression;
 
@@ -19,6 +21,9 @@ public class PrintNode extends SentenceNode {
     @Override
     public void typeCheck() {
         expression.typeCheck();
+        if (!(expression.getType().equals(new IntTypeNode())  || expression.getType().equals(new BoolTypeNode()))) {
+            GestionErroresTiny.getInstance().errorTipos("Error: print only accepts int and bool expressions");
+        }
     }
 
     @Override

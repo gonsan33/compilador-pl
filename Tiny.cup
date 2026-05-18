@@ -63,7 +63,8 @@ INSTRUCCION ::= DECL_FUNCION:d PUNTOCOMA {: RESULT = d; :}
  | INSTR_PRINT:p {: RESULT = p; :}
  | INSTR_SCAN:s {: RESULT = s; :}
  | DELETE DESIGNADOR:d PUNTOCOMA {: RESULT = new DeleteNode(d); :}
- | ASIGNACION:a {: RESULT = a; :};
+ | ASIGNACION:a {: RESULT = a; :}
+ | EXPRESION:e PUNTOCOMA {: RESULT = new ExpressionSentenceNode(e); :};
  LISTA_INSTRUCCIONES_BLOQUE ::= INSTRUCCION_BLOQUE:i LISTA_INSTRUCCIONES_BLOQUE:l {: l.add(0, i); RESULT = l; :}
 | {: RESULT = new ArrayList<SentenceNode>(); :};
 INSTRUCCION_BLOQUE::= DECL_VARIABLE:d PUNTOCOMA {: RESULT = d; :}
@@ -72,7 +73,9 @@ INSTRUCCION_BLOQUE::= DECL_VARIABLE:d PUNTOCOMA {: RESULT = d; :}
  | INSTR_PRINT:p {: RESULT = p; :}
  | INSTR_SCAN:s {: RESULT = s; :}
  | DELETE DESIGNADOR:d PUNTOCOMA {: RESULT = new DeleteNode(d); :}
- | ASIGNACION:a {: RESULT = a; :};
+ | ASIGNACION:a {: RESULT = a; :}
+| EXPRESION:e PUNTOCOMA {: RESULT = new ExpressionSentenceNode(e); :};
+
 
 ASIGNACION ::= DESIGNADOR:d ASIGN EXPRESION:e PUNTOCOMA {: RESULT = new AssignNode(d, e); :};
 INSTR_PRINT ::= PRINT PAP EXPRESION:e PCIERRE PUNTOCOMA {: RESULT = new PrintNode(e); :};

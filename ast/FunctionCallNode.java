@@ -1,6 +1,9 @@
 package ast;
 
 import java.util.ArrayList;
+
+import javax.lang.model.type.NullType;
+
 import bind.SymbolTable;
 import errors.GestionErroresTiny;
 
@@ -66,7 +69,7 @@ public class FunctionCallNode extends DesignatorNode {
 
     @Override
     public TypeNode getType() {
-        return declaration.getReturnType();
+        return declaration.getReturnType() != null ? declaration.getReturnType() : new NullTypeNode();
     }
 
     private void generarCodigoArgumento(ExpressionNode arg, int index, StringBuilder str) {
