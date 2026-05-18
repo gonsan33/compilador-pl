@@ -14,11 +14,13 @@ public class FunctionNode extends SentenceNode {
     protected TypeNode returnType;
     protected BlockNode body;
 
+    protected boolean isOld; 
     public FunctionNode(String identifier, ArrayList<ParameterNode> params, TypeNode returnType, BlockNode body) {
         this.identifier = identifier;
         this.params = params;
         this.returnType = returnType;
         this.body = body;
+        this.isOld = false;
     }
 
     public String toString() {
@@ -68,6 +70,7 @@ public class FunctionNode extends SentenceNode {
         this.params = params;
         this.returnType = returnType;
         this.body = body;
+        this.isOld = true;
     }
 
     public ArrayList<ParameterNode> getParams() {
@@ -76,6 +79,13 @@ public class FunctionNode extends SentenceNode {
 
     @Override
     public StringBuilder generateCode() {
+        //solo la última declaración, con cuerpo, genera código. 
+        if (isOld) {
+            return new StringBuilder();
+        } 
+
+        //Ahora estamos seguros de tener cuerpo y de no redefinir funciones. 
+
         StringBuilder str = new StringBuilder();
         str.append("(func $" + identifier);
         if (returnType != null) {// Si no es void

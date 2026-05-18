@@ -1,0 +1,25 @@
+fn par(n : int) : bool ; 
+fn impar(n:int ) : bool; 
+
+fn par(n : int) : bool {
+    if (n == 0) {
+        return true;
+    } else {
+        return impar(n - 1);
+    }
+}
+
+fn impar(n : int) : bool {
+    if (n == 0) {
+        return false;
+    } else {
+        return par(n - 1);
+    }
+}
+
+fn main() {
+    var n : int;
+
+    scan(n);
+    print(par(n));
+}

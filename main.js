@@ -47,7 +47,7 @@ var importObjects = {
     }};
 
 async function start() {
-    const code = readFileSync("wat.wasm");
+    const code = readFileSync("main.wasm");
     wasmModule = await WebAssembly.compile(code);
     instance = await WebAssembly.instantiate(wasmModule, importObjects);
 //    await instance.exports.init();
