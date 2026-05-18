@@ -1,0 +1,11 @@
+fn inc(v : &int) : int {
+    v = v + 1;
+    return v;
+}
+
+fn main() {
+    var arr : [2]int;
+    arr[1] = 9;
+    print(inc(arr[1]));
+    print(arr[1]);
+}
