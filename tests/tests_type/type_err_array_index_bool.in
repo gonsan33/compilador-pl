@@ -1,4 +1,5 @@
 var arr : [3]int;
 var b : bool = true;
-arr[b] = 1;
-
+fn main() {
+    arr[b] = 1;
+}

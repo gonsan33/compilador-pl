@@ -12,31 +12,34 @@ fn suma(a : int, b : int) : int {
 
 var resultado : int = suma(x, 3);
 
-{
-    var x : int = 10;
-    var y : int = suma(x, resultado);
-    print(y);
-}
-
-print(x);
-
-while (b) {
-    x = x - 1;
-    b = false;
-}
-
-if (x == 0) {
-    print(x);
-} else {
-    print(resultado);
-}
-
-for (;x < 10;) {
-    x = x + 1;
-}
-
 var p : $int = new int;
-delete p;
 
-scan(x);
-arr[0] = x;
+fn main() {
+    {
+        var x : int = 10;
+        var y : int = suma(x, resultado);
+        print(y);
+    }
+
+    print(x);
+
+    while (b) {
+        x = x - 1;
+        b = false;
+    }
+
+    if (x == 0) {
+        print(x);
+    } else {
+        print(resultado);
+    }
+
+    for (;x < 10;) {
+        x = x + 1;
+    }
+
+    delete p;
+
+    scan(x);
+    arr[0] = x;
+}

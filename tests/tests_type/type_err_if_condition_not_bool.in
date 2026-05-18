@@ -1,6 +1,7 @@
 var x : int = 1;
 
-if (x) {
-    print(x);
+fn main() {
+    if (x) {
+        print(x);
+    }
 }
-

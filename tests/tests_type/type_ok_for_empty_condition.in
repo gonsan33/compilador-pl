@@ -1,4 +1,5 @@
-for (;;) {
-    print(1);
+fn main() {
+    for (;;) {
+        print(1);
+    }
 }
-

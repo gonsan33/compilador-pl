@@ -1,7 +1,7 @@
 var arr : [3]int;
-arr[0] = 1;
-var x : int = arr[0];
-
 var matrix : [2][2]int;
-matrix[0][1] = x;
-
+fn main() {
+    arr[0] = 1;
+    var x : int = arr[0];
+    matrix[0][1] = x;
+}

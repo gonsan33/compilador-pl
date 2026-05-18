@@ -1,5 +1,6 @@
 type Point : struct(x : int, flag : bool);
 var p : Point;
 
-p.flag = 1;
-
+fn main() {
+    p.flag = 1;
+}

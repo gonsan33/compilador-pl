@@ -1,7 +1,8 @@
 type Point : struct(x : int, flag : bool);
 var p : Point;
 
-p.x = 1;
-p.flag = false;
-var x : int = p.x;
-
+fn main() {
+    p.x = 1;
+    p.flag = false;
+    var x : int = p.x;
+}

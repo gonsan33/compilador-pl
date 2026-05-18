@@ -1,3 +1,4 @@
 var p : $int = new int;
-delete p;
-
+fn main() {
+    delete p;
+}

@@ -1,2 +1,4 @@
 var x : int = 5;
-print(y);
+fn main() {
+    print(y);
+}
