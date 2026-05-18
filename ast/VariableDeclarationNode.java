@@ -8,6 +8,7 @@ public class VariableDeclarationNode extends SentenceNode {
     protected ExpressionNode expression = null;
     protected NewNode newNode = null;
     protected int delta; 
+    protected boolean isGlobal = false; 
     public VariableDeclarationNode(String id, TypeNode type) {
         this.identifier = id;
         this.type = type;
@@ -48,6 +49,14 @@ public class VariableDeclarationNode extends SentenceNode {
         return this.type;
     }
 
+    public boolean isGlobal() {
+        return this.isGlobal;
+    }
+
+    public void setGlobal(boolean isGlobal) {
+        this.isGlobal = isGlobal;
+    }
+
     @Override
     public void typeCheck() {
         type.typeCheck();
@@ -78,16 +87,20 @@ public class VariableDeclarationNode extends SentenceNode {
         if(this.expression != null) {
             str.append("i32.const " + this.delta); 
             str.append("\n");
-            str.append("local.get $localsStart\n"); 
-            str.append("i32.add\n");
+            if (!isGlobal) {
+                str.append("  local.get $localsStart\n"); 
+                str.append("  i32.add\n");
+            }
             str.append(this.expression.generateCode());
             str.append("i32.store\n");
         }
         if(this.newNode != null) {
             str.append("i32.const " + this.delta); 
             str.append("\n");
-            str.append("local.get $localsStart\n"); 
-            str.append("i32.add\n");
+            if (!isGlobal) {
+                str.append("  local.get $localsStart\n"); 
+                str.append("  i32.add\n");
+            }
             str.append(this.newNode.generateCode());
             str.append("i32.store\n");
         }

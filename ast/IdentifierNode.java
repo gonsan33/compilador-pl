@@ -45,8 +45,14 @@ public class IdentifierNode extends DesignatorNode{
     public StringBuilder generateCodeL() {
         StringBuilder code = new StringBuilder();
         code.append("i32.const "+ this.delta() + "\n");
-        code.append("local.get $localsStart\n");
-        code.append("i32.add\n");
+        boolean isLocal = true;
+        if (declaration instanceof VariableDeclarationNode) {
+            isLocal = !((VariableDeclarationNode) declaration).isGlobal();
+        }
+        if (isLocal) {
+            code.append("local.get $localsStart\n");
+            code.append("i32.add\n");
+        }
         return code;
     }
 }

@@ -8,10 +8,10 @@
   (import "runtime" "print" (func $print (type $_sig_i32)))
   (import "runtime" "read" (func $read (type $_sig_ri32)))
   (memory 2000)
-  (global $SP (mut i32) (i32.const 0)) ;; start of stack
-  (global $MP (mut i32) (i32.const 0)) ;; mark pointer
+  (global $SP (mut i32) (i32.const 4)) ;; start of stack after globals
+  (global $MP (mut i32) (i32.const 4)) ;; mark pointer
   (global $NP (mut i32) (i32.const 131071996)) ;; heap 2000*64*1024-4
-  (start $main)
+  (start $initialize)
 (func $reserveStack (param $size i32) (result i32)
   global.get $MP
   global.get $SP
@@ -79,11 +79,6 @@
     end
   end
 )
-i32.const 0
-local.get $localsStart
-i32.add
-i32.const 7
-i32.store
 (func $useGlobal (result i32)
   (local $localsStart i32)
   (local $temp i32)
@@ -98,12 +93,17 @@ i32.store
   i32.add
   local.set $localsStart
 i32.const 0
-local.get $localsStart
-i32.add
 i32.load
 call $freeStack
 return
   i32.const 0
   call $freeStack
 )
+(func $initialize
+i32.const 0
+i32.const 7
+i32.store
+  call $main
+)
+
 )

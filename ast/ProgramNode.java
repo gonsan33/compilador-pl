@@ -45,6 +45,14 @@ public class ProgramNode extends SentenceNode {
 
     @Override
     public StringBuilder generateCode() {
+
+        for (SentenceNode instruction : instructions) {
+            if (instruction instanceof VariableDeclarationNode) {
+                ((VariableDeclarationNode) instruction).setGlobal(true);
+            }
+        }
+        
+        int espacioGlobales = asignarDelta(0);
         StringBuilder str = new StringBuilder();
         str.append("(module\n");
         str.append("  (type $_sig_i32i32i32 (func (param i32 i32 i32) ))\n");
@@ -56,10 +64,10 @@ public class ProgramNode extends SentenceNode {
         str.append("  (import \"runtime\" \"print\" (func $print (type $_sig_i32)))\n");
         str.append("  (import \"runtime\" \"read\" (func $read (type $_sig_ri32)))\n");
         str.append("  (memory 2000)\n");
-        str.append("  (global $SP (mut i32) (i32.const 0)) ;; start of stack\n");
-        str.append("  (global $MP (mut i32) (i32.const 0)) ;; mark pointer\n");
+        str.append("  (global $SP (mut i32) (i32.const " + espacioGlobales + ")) ;; start of stack after globals\n");
+        str.append("  (global $MP (mut i32) (i32.const " + espacioGlobales + ")) ;; mark pointer\n");
         str.append("  (global $NP (mut i32) (i32.const 131071996)) ;; heap 2000*64*1024-4\n");
-        str.append("  (start $main)\n");
+        str.append("  (start $initialize)\n");
 
         str.append("(func $reserveStack (param $size i32) (result i32)\n");
         str.append("  global.get $MP\n");
@@ -132,10 +140,22 @@ public class ProgramNode extends SentenceNode {
         str.append("  end\n");
         str.append(")\n");
 
+
         for (SentenceNode instruction : instructions) {
-            str.append(instruction.generateCode());
+            if (!(instruction instanceof VariableDeclarationNode)) {
+                str.append(instruction.generateCode());
+            }
         }
 
+        str.append("(func $initialize\n");
+        for (SentenceNode instruction : instructions) {
+            if (instruction instanceof VariableDeclarationNode) {
+                str.append(instruction.generateCode());
+            }
+        }
+        str.append("  call $main\n");         
+        str.append(")\n\n");
+        
         str.append(")\n");
 
         return str;
