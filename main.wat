@@ -79,7 +79,7 @@
     end
   end
 )
-(func $useGlobal (result i32)
+(func $par (result i32)
   (local $localsStart i32)
   (local $temp i32)
   i32.const 4
@@ -92,17 +92,104 @@
   i32.const 4
   i32.add
   local.set $localsStart
-i32.const 0
+i32.const 4
+local.get $localsStart
+i32.add
 i32.load
+i32.const 0
+i32.eq
+if i32.const 1
 call $freeStack
 return
+else 
+global.get $SP
+i32.const 4
+i32.add
+i32.const 4
+local.get $localsStart
+i32.add
+i32.load
+i32.const 1
+i32.sub
+i32.store offset=4
+call $impar
+call $freeStack
+return
+end 
   i32.const 0
   call $freeStack
 )
-(func $initialize
+(func $impar (result i32)
+  (local $localsStart i32)
+  (local $temp i32)
+  i32.const 4
+  call $reserveStack
+  local.set $temp
+  global.get $MP
+  local.get $temp
+  i32.store
+  global.get $MP
+  i32.const 4
+  i32.add
+  local.set $localsStart
+i32.const 4
+local.get $localsStart
+i32.add
+i32.load
 i32.const 0
-i32.const 7
-i32.store
+i32.eq
+if i32.const 0
+call $freeStack
+return
+else 
+global.get $SP
+i32.const 4
+i32.add
+i32.const 4
+local.get $localsStart
+i32.add
+i32.load
+i32.const 1
+i32.sub
+i32.store offset=4
+call $par
+call $freeStack
+return
+end 
+  i32.const 0
+  call $freeStack
+)
+(func $main
+  (local $localsStart i32)
+  (local $temp i32)
+  i32.const 8
+  call $reserveStack
+  local.set $temp
+  global.get $MP
+  local.get $temp
+  i32.store
+  global.get $MP
+  i32.const 4
+  i32.add
+  local.set $localsStart
+i32.const 4
+local.get $localsStart
+i32.add
+  call $read
+  i32.store
+global.get $SP
+i32.const 4
+i32.add
+i32.const 4
+local.get $localsStart
+i32.add
+i32.load
+i32.store offset=4
+call $par
+  call $print
+  call $freeStack
+)
+(func $initialize
   call $main
 )
 

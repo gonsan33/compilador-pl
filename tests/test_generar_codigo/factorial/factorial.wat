@@ -79,7 +79,7 @@
     end
   end
 )
-(func $suma3 (result i32)
+(func $factorial (result i32)
   (local $localsStart i32)
   (local $temp i32)
   i32.const 12
@@ -92,7 +92,19 @@
   i32.const 4
   i32.add
   local.set $localsStart
-i32.const 0
+i32.const 8
+local.get $localsStart
+i32.add
+i32.const 1
+i32.store
+i32.const 12
+local.get $localsStart
+i32.add
+i32.const 1
+i32.store
+block
+loop
+i32.const 12
 local.get $localsStart
 i32.add
 i32.load
@@ -100,12 +112,39 @@ i32.const 4
 local.get $localsStart
 i32.add
 i32.load
+i32.le_s
+i32.eqz
+br_if 1
+i32.const 8
+local.get $localsStart
 i32.add
 i32.const 8
 local.get $localsStart
 i32.add
 i32.load
+i32.const 12
+local.get $localsStart
 i32.add
+i32.load
+i32.mul
+i32.store
+i32.const 12
+local.get $localsStart
+i32.add
+i32.const 12
+local.get $localsStart
+i32.add
+i32.load
+i32.const 1
+i32.add
+i32.store
+br 0 
+end 
+end 
+i32.const 8
+local.get $localsStart
+i32.add
+i32.load
 call $freeStack
 return
   i32.const 0
@@ -114,7 +153,7 @@ return
 (func $main
   (local $localsStart i32)
   (local $temp i32)
-  i32.const 4
+  i32.const 8
   call $reserveStack
   local.set $temp
   global.get $MP
@@ -124,56 +163,20 @@ return
   i32.const 4
   i32.add
   local.set $localsStart
-i32.const 0
-local.get $localsStart
-i32.add
-  i32.const 8
-  call $reserveHeap
-i32.store
-i32.const 0
-local.get $localsStart
-i32.add
-i32.load
-i32.const 0
-i32.add
-i32.const 7
-i32.store
-i32.const 0
-local.get $localsStart
-i32.add
-i32.load
 i32.const 4
-i32.add
-i32.const 5
-i32.store
-global.get $SP
-i32.const 0
-i32.add
-i32.const 0
 local.get $localsStart
 i32.add
-i32.load
-i32.const 0
-i32.add
-i32.load
-i32.store offset=4
+  call $read
+  i32.store
 global.get $SP
 i32.const 4
 i32.add
-i32.const 0
+i32.const 4
 local.get $localsStart
 i32.add
 i32.load
-i32.const 4
-i32.add
-i32.load
 i32.store offset=4
-global.get $SP
-i32.const 8
-i32.add
-i32.const 30
-i32.store offset=4
-call $suma3
+call $factorial
   call $print
   call $freeStack
 )

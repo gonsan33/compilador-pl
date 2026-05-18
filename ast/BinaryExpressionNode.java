@@ -85,7 +85,7 @@ public class BinaryExpressionNode extends ExpressionNode {
 
                 break;
             case EQ :
-                str.append("i32.eq_s");
+                str.append("i32.eq");
                 break;
             case AND:
                 str.append("i32.and");
